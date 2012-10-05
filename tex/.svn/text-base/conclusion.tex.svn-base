@@ -1,0 +1,10 @@
+\chapter{Conclusion}\label{chap:conclusion}
+Our motivation led us to research turn-based games and define our target audience and criteria based on this. We designed KAPAOOW to be focused on sequential turn-based fighting games. We also designed an interpreter that makes it possible to execute the games made in KAPAOOW.
+
+We believe that we have enhanced the readability and learnability of KAPAOOW by making newlines mandatory in the language to force a good structure in the code. 
+
+As mentioned in the motivation for this project at Section \ref{sec:motivation}, we wanted to set up a basic environment for game creators to create turn-based games. We have done this by allowing them to create characters and give them different actions and defend methods to protect the character's attributes through a block structure. Through our scope rules we have made it possible for the game creators to easily access and modify the opponent's attributes through actions and defend blocks. Through special blocks it is also possible to set up different effects to happen in the beginning or the end of a turn. We also allow the game creators to skip turns, either the current player or its opponent. The game creators are also able to create AIs. This enables them to fight the computer or they can have two AIs fight against each other.
+
+KAPAOOW is designed for people with little programming experience and because of this we have had to put ourself in their place when discussing what functionalities our language should have.
+
+For this project we chose to make our own parser by hand, which gave us a good insight in how a parser works. We also chose to make an interpreter instead of a compiler because it allowed us to make a program to execute the games instead of a program that make the games.

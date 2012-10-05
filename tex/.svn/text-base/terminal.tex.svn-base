@@ -1,0 +1,148 @@
+\chapter{Token Definitions of KAPAOOW}\label{app:tokens}
+
+The table below shows the the token definitions. The first column is the token type which is simply a name for reference, the second column is a regular expression for how the token is recognized by the scanner, and the third column shows which of the tokens are non-significant.
+
+The order of the tokens is the order which the scanner will try to match the regular expression to a token. Taking one of the top tokens and moving it $n$ rows down would mean iterating $n$ more times to find a match.
+
+All token definitions are case insensitive.
+
+\begin{longtable}{p{3.7cm} p{4.7cm} c}% 4.7cm er nok til ID. 3.7cm er nok til at der kan stå GREATEROREQUAL med lidt mellemrum til regex
+\textbf{Token type} & \textbf{Regular expression} & \textbf{Ignore}\\\hline\\
+NEWLINE & $"\backslash n"$ & \\\\
+TAB & $"\backslash t"$ & \textit{Yes}\\
+COMMENT & $"//.^*"$ & \textit{Yes}\\\\
+
+DECIMAL & $"[0-9]^+(\backslash .[0-9]^+)?"$ & \\\\
+
+GREATEROREQUALL & $">="$ & \\
+GREATEROREQUALR & $"=>"$ & \\
+LESSOREQUALL & $"<="$ & \\
+LESSOREQUALR & $"=<"$ & \\
+LESSTHAN & $"<"$ & \\
+GREATERTHAN & $">"$ & \\\\
+
+EQUAL & $"="$ & \\\\
+
+IS & $"\;\;is\;\;"$ & \\\\
+
+AND & $"\;\;and\;\;"$ & \\
+OR & $"\;\;or\;\;"$ & \\\\
+
+\pagebreak
+\multicolumn{3}{l}{\textit{(Continued from the previous page)}}\\
+\textbf{Token name} & \textbf{Regular expression} & \textbf{Ignore}\\\hline\\
+
+PLUS & $"\backslash +"$ & \\
+MINUS & $"-"$ & \\
+MULTIPLICATION & $"\backslash *"$ & \\
+DIVISION & $"/"$ & \\
+MODULUS & $"\;\;mod\;\;"$ & \\\\
+
+LEFTPARENT & $"\backslash ("$ & \\
+RIGHTPARENT & $"\backslash )"$ & \\\\
+
+PLAYER & $"player"$ & \\
+ENEMY & $"enemy"$ & \\\\
+
+MESSAGESPACE & $"message\;\;"$ & \\
+MESSAGE & $"message"$ & \\
+STRING & $"\backslash " (\backslash \backslash .|(?!\backslash ").)^* \backslash ""$ & \\\\
+
+DOT & $"\backslash ."$ & \\\\
+
+IF & $"if\;\;"$ & \\
+THEN & $"\;\; then"$ & \\
+ELSEIF & $"else\;\;if\;\;"$ & \\
+ELSE & $"else"$ & \\
+ENDIF & $"end\;\;if"$ & \\\\
+
+RANDOMOF & $"random\;\;of\;\;"$ & \\
+CASE & $"\;\;cases"$ & \\
+CASE & $"\;\;case"$ & \\
+ENDRANDOM & $"end\;\;random"$ & \\\\
+
+WHILE & $"while\;\;"$ & \\
+DO & $"\;\;do"$ & \\
+LOOP & $"loop"$ & \\\\
+
+SKIPTURN & $"skip\;\;turn"$ & \\\\
+
+FROM & $"from\;\;"$ & \\
+DOWNTO & $"\;\;downto\;\;"$ & \\
+TO & $"\;\;to\;\;"$ & \\
+JUMP & $"\;\;jump\;\;"$ & \\
+NEXT & $"next"$ & \\\\
+
+USE & $"use\;\;"$ & \\\\
+
+ACTION & $"action\;\;"$ & \\
+ENDACTION & $"end\;\;action"$ & \\\\
+
+\pagebreak
+\multicolumn{3}{l}{\textit{(Continued from the previous page)}}\\
+\textbf{Token name} & \textbf{Regular expression} & \textbf{Ignore}\\\hline\\
+
+DAMAGE & $"damage\;\;"$ & \\
+BY & $"\;\;by\;\;"$ & \\
+USING & $"\;\;using\;\;"$ & \\\\
+
+DEFEND & $"defend\;\;"$ & \\
+ENDDEFEND & $"end\;\;defend"$ & \\\\
+
+ATTACKTYPES & $"attack\;\;types"$ & \\
+ENDTYPES & $"end\;\;types"$ & \\\\
+
+TURNBEGINS & $"turn\;\;begins"$ & \\
+TURNENDS & $"turn\;\;ends"$ & \\
+ENDTURN & $"end\;\;turn"$ & \\
+
+CHARACTERS & $"characters"$ & \\
+ENDCHARACTERS & $"end\;\;characters"$ & \\\\
+
+CHARACTER & $"character\;\;"$ & \\
+ENDCHARACTER & $"end\;\;character"$ & \\\\
+
+WINS & $"\;\;wins"$ & \\
+DRAW & $"draw"$ & \\\\
+
+SELECT & $"select\;\;"$ & \\\\
+
+START & $"start"$ & \\
+ENDSTART & $"end\;\;start"$ & \\\\
+
+
+VALUE & $"value"$ & \\\\
+
+ID & $"[\backslash w \_][\backslash w 0-9 \_]^*"$ & \\\\
+
+SPACE & $"\;\;"$ & \textit{Yes}
+\end{longtable}
+
+\subsection*{Noisewords}
+The \texttt{ID} tokens lexeme is not allowed to match any the following noisewords independent of the casing:\\\\
+\texttt{is}
+\texttt{and}
+\texttt{or}
+\texttt{mod}
+\texttt{if}
+\texttt{then}
+\texttt{else}
+\texttt{end}
+\texttt{random}
+\texttt{of}
+\texttt{cases}
+\texttt{case}
+\texttt{while}
+\texttt{do}
+\texttt{from}
+\texttt{downto}
+\texttt{to}
+\texttt{jump}
+\texttt{use}
+\texttt{action}
+\texttt{damage}
+\texttt{by}
+\texttt{using}
+\texttt{defend}
+\texttt{character}
+\texttt{select}

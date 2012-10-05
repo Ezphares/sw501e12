@@ -1,0 +1,124 @@
+Based on our syntax and semantics from Section \ref{sec:kapaSyntax} and \ref{sec:kapaSemantics} we had to implement our interpreter. When implementing our scanner we had to ensure that it separates the instruction of source code into tokens so that our parser can build the abstract syntax tree. Our semantic analysis has to check that the scope rules stated in Section \ref{sec:scope} are fulfilled and it also has to set up our variable environment. The execution phase enables the game creator to execute the code written in KAPAOOW either against another human or against an AI.
+
+The following chapter will explain how we have implemented these four phases in our interpreter.
+
+\section{Scanner}
+The implementation of KAPAOOW's scanner is explained in this section. Our scanner's job is to convert KAPAOOW code into a stream of tokens that our parser can use to build an abstract syntax tree. For a full listing of all the tokens in KAPAOOW look in Appendix \ref{app:tokens}.
+
+\subsection*{Regular Expressions}
+A regular expression is a pattern that matches a language. For example the regular expression $"0 \mid 1"$ matches the language consisting of $\{ 0, 1 \}$. If you extend that pattern a little to $"(0 \mid 1)^*"$ you have the regular expression that matches the language consisting of all possible string of 0s and 1s \cite{syntaxbog}.
+
+We use regular expressions to match tokens. Different ways exist to write regular expressions. The regular expression we use in the token definition list is patterns usable in Java. Some of the symbols used in a regular expression can be matched by escaping them with a $"\backslash"$. Here is a list of patterns that should explain the regular expressions we use:
+\begin{table}[H]
+\centering
+\begin{tabular}{l p{7cm}}
+\textbf{Regular} & \multirow{2}{*}{\textbf{Description}}\\
+\textbf{Expression\:} & \\
+\hline\\
+$"abc"$ & Matches \textit{"abc"}.\\
+$"\backslash n"$ & Matches a newline.\\
+$"\backslash t"$ & matches a tab.\\
+$"a^*"$ & Matches zero or more \textit{"a"}.\\
+$"."$ & Matches every character that is not a newline.\\
+$"[0-9]"$ & Matches a number between 0-9.\\
+$[0-9a-z]$ & Matches a number between 0-9 or a letter between a-z.\\
+$"[0-9]^+"$ & Matches any number consisting of one or more digits.\\
+$"a?"$ & Matches the empty string or one \textit{a} (optional).\\
+$"((?!a).)^*"$ & Matches any string without an \textit{a}.\\
+$"\backslash w"$ & Matches all unicode letters.\\
+\end{tabular}
+\caption{Some regular expressions and a description of them}
+\end{table}
+
+\subsection*{Non-significant tokens}
+Table \ref{tab:nonsig} shows our non-significant tokens. Tabs and comments is almost at the top of the token definitions list. This is because it is allowed to write tabs and comments almost anywhere in KAPAOOW-code, and because of that we can only assume that because you can, you will also do it. 
+\begin{table}[h]
+\centering
+\begin{tabular}{l l c}
+\multirow{2}{*}{\textbf{Token type}} & \textbf{Regular} & \multirow{2}{*}{\textbf{Ignore}}\\
+ & \textbf{expression} & \\
+\hline\\
+TAB & $"\backslash t"$ & \textit{Yes}\\
+COMMENT & $"//.^*"$ & \textit{Yes}\\
+$\vdots$\\
+SPACE & $"\;\;"$ & \textit{Yes}
+\end{tabular}
+\caption{Non-significant tokens for the language KAPAOOW.}
+\label{tab:nonsig}
+\end{table}
+That is why it is a good idea to place these in the top most part of the token list, because it allows us to match tabs and comments quickly.
+
+Spaces is at the bottom of the token definitions list. The reason for this lexical precedence is that spaces are important to a lot of the keywords in KAPAOOW and is therefore listed before the space-token. An example of a keyword using spaces is the \textbf{is} keyword, it must have a space before and after the word. Notice that in KAPAOOW, newlines are an essential part of the language used to force structure in the language.
+
+\subsection*{The Scanner}
+Listing \ref{lst:scannerloop} is the main loop of the scanner. Each line of the Listing is explained line by line below.
+\begin{lstlisting}[language=Java,caption={Main loop of the scanner in pseudocode},label=lst:scannerloop, morekeywords={foreach,String,List,and}]
+List tokens;
+
+do
+{
+	tokenFound = false;
+	
+	if (buffer.length() == 0)
+		buffer = getNextLine();
+	
+	if (buffer.isEmpty())
+		tokenFound = false;
+	else
+	{
+		foreach (tokenDefinition in tokenDefinitions)
+		{
+			String match = tokenDefinition.GetMatch(buffer);
+			if (match.length() > 0)
+			{
+				String name = tokenDefinition.Name;
+				
+				if (! tokenDefinition.Ignore)
+					tokens.add(new Token(name, match));
+				
+				if (tokenDefinition.type == "ID" and isNoise(match))
+					ScannerError();			
+				
+				buffer = buffer.substring(match.length());
+				
+				tokenFound = true;
+				break;
+			}
+		}
+		if (! tokenFound)
+			ScannerError();
+	}
+} while (tokenFound);
+
+return tokens;
+\end{lstlisting}
+\begin{description}
+\item[Line 1] We need a new empty \texttt{List} that all the tokens will be added to.
+
+\item[Line 3-36] The scanner uses a \texttt{do-while} loop that will loop until the body does not find any token match; i.e. \textit{tokenFound} is \texttt{false}.
+
+\item[Line 5] In the beginning of each iteration \textit{tokenFound} must be set to \texttt{false}, because we are only going to set it to \texttt{true} if we find a matching token.
+
+\item[Line 7-11] \textit{buffer} is a \texttt{String} containing a piece of the KAPAOOW-code that is being scanned. If the current length of the \textit{buffer} is 0 then we read the next line of KAPAOOW-code. Note that each line of code may contain more than one token, and the loop is only going to find one token at a time, this is why the \textit{buffer} might not be of length 0.
+
+If we have a \textit{buffer} with length 0, the next line was read, and the \textit{buffer} is empty, then we know that we are not going to find any more tokens and the scanner has completed its job.
+
+\item[Line 12-35] At this point we should have a buffer containing tokens to be identified.
+
+\item[Line 14-32] To find a token definition, that matches something in the buffer, we use a \texttt{foreach}-loop to iterate through all the \textit{tokenDefinition\textbf{s}} in Appendix \ref{app:tokens} by the order of the lexical precedence.
+
+\item[Line 16] The current \textit{tokenDefinition} needs to checked if its regular expression matches a token in the \textit{buffer}. If there is a match the token is copied from the \textit{buffer} to the \textit{match} string.
+
+\item[Line 17-22] If \textit{match} has a length greater than 0 then the current \textit{tokenDefinition} matches something in the \textit{buffer}.
+The \textit{name} of the \textit{tokenDefinition} is the same as token name as seen in Appendix \ref{app:tokens}.
+If this token is not a non-significant token, then it is added to the \texttt{List} of tokens.
+
+\item[Line 24-25] In Appendix \ref{app:tokens} there is also a list of noise words. If the \textit{tokenDefinition}'s \textit{type} is an ID token, and the ID is a noise word, then there is an error which we communicate through a \textit{ScannerError}.
+
+\item[Line 27-31] The \textit{buffer} is updated in order to remove the token that was just identified. The updated \textit{buffer} is the substring of the old \textit{buffer} with a start-index corresponding to the string length of the match.
+We have found a token so we set \textit{tokenFound} to \texttt{true} and \texttt{break} out of the \texttt{foreach}-loop.
+
+\item[Line 33-34] If we reached a point where the \textit{buffer} is not empty, and there was not any match to any of the token definitions, then there must be something wrong with the code being scanned. This is communicated through a \textit{ScannerError}.
+
+\item[Line 38] When scanning is completed we have a list of tokens sorted by appearance, which can be returned.
+\end{description}

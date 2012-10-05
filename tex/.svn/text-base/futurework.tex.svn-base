@@ -1,0 +1,39 @@
+\section{Future work}
+The following are things we would have liked to implement if we had more time.
+\begin{description}
+\item[Descriptions on actions]
+Optional descriptions of actions in the ruleset. It is currently not possible to add a description of what the actions of a game character does. The idea is to add a string of text that briefly describes what the actions do, and show this description in the GUI while the game is running, and the corresponding action is selected.
+
+\item[From]
+The from statement in its current form, has very limited functionality. All it does is count from one number to another, however the current number is not available for use inside the loop. A foresight which we discovered to late in the project.
+
+\item[Arrays]
+To make more advanced data structures possible.
+
+\item[Boolean]
+For true/false values rather than using a variable with one of two values. This would also make it possible for the interpreter to save some memory as booleans could be implemented as a much less memory consuming type than decimal.
+
+\item[Functions]
+Functions in general, simply structured functions which could take input values and return an output value.
+
+\item[Math]
+More advanced mathematical functionality, such as the following:
+
+\begin{description}
+\item[Rounding]
+Rounding of numbers (both up and down) so that the game creator can get less precise results if wanted/needed. For example as it is now, the interpreter is set to round the numbers to two decimals rounding to the nearest 10.
+
+\item[Square root]
+Implementation of square root, so that the game creator does not have to have a higher than average mathematics understanding to implement a similar functionality
+
+\item[Random number]
+A function that returns a random number between two numbers. As it stands right now the only way to get a random number within a certain range, is to use the Random statement with each case setting a variable to a specific value.
+\end{description}
+
+
+\item[Editor with error messaging]
+A simple editor with functionality sharing similarity to Microsoft's IntelliSense, and checking of the code while the game creator is writing the code. So that the game creator can get quick help with writing functions and detecting some of the errors without having to run the rules through the interpreter every time.
+
+\item[Testing]
+Due to time limitations we did not have time to perform actual tests to see if we managed to develop a language that has a high readability and learnability. Given more time we could have performed tests with people from our target audience to determined if our criteria has been fulfilled.
+\end{description}

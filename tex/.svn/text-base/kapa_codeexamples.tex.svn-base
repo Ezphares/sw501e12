@@ -1,0 +1,185 @@
+\chapter{Game Examples}\label{app:codeexamples}
+In this section we show some game examples of what the language KAPAOOW looks like.
+
+\subsection*{Knight vs Cat}
+
+This game consists of a battle between a Knight and a Cat. They both have hit points, called \textit{HP}, to determine when one of them dies. They both have attacks that affects each others hit points.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Knight vs Cat: Definition of characters},label=KvCchars]
+characters
+	Character Knight
+		HP = 400 // hit points
+		HealthPotions = 10
+		
+		action Slap
+			damage enemy.HP by 15
+			skip turn
+		end action
+		
+		action HealthPotion
+			if HealthPotions > 0 then
+				HealthPotions = HealthPotions - 1
+				HP = HP + 100
+			end if
+			skip turn
+		end action
+	end Character
+	
+	Character Cat
+		Lives = 9
+		HP = 100
+		
+		turn ends
+			if HP <= 0 and Lives > 0
+				HP = 100
+				Lives = Lives - 1
+		end turn
+		
+		action Scratch
+			random of 10
+				8 cases
+					damage enemy.HP by 25
+				1 case
+					damage enemy.HP by 100 // critical
+			end random
+			skip turn
+		end action
+	end Character
+end characters
+\end{lstlisting}
+Listing \ref{KvCchars} shows the characters of this game. The entire Listing is the character definition block. This code block contains all the characters of the game. In this case the characters are the Knight and the Cat.
+
+Lines 2-18 is the Knight character definition. At lines 3-4 the Knight is granted 400 hit points and 10 health potions. At lines 6-9 an action called \textit{Slap} is shown. \textit{Slap} is an attack that does 15 damage points to the enemy. After doing 15 points of damage, the turn is ended by the \textit{skip turn} statement.
+
+At lines 11-17 the action \textit{HealthPotion} is defined. The action illustrates the use of a potion that grants the Knight 100 additional hit points, and makes sure to decrement the number of potions left. After drinking a potion the turn ends by the \textit{skip turn} statement at line 16.
+
+
+Lines 20-39 is the Cat character definition. At line 21 the Cat is granted 9 lives and at line 22 the Cat is granted 100 hit points.
+
+At lines 24-28 is some rules that only apply to the Cat. At the end of each turn line 25 will check if the Cat's \textit{HP} is below 1 and if it has more lives left to resurrect with. If so, the Cat's HP is restored to 100 at line 26 and its lives decremented by 1 at line 27.
+
+Action \textit{Scratch} is defined at lines 30-38. This action can decrement the enemy's hit points by either 25 or 100 hit points. At lines 31-36 is a random case definition. Line 31 says there is 10 different outcomes. Line 32 says that 8 out of the 10 different outcomes, this case is run. Line 34 says that 1 out of the 10 different outcomes, this case is run. The Cat has 10\% chance of hitting a critical scratch. But since only 9(8+1) of the 10 outcomes were defined, the Cat also has 10\% chance of missing an attack. The \textit{Scratch} action ends the turn by the \textit{skip turn} statement at line 37.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Knight vs Cat: Winning conditions},label=KvCturn]
+turn ends
+	if enemy.HP <= 0 then
+		player wins
+	end if
+end turn
+\end{lstlisting}
+Listing \ref{KvCturn} is the winning conditions for the Knight vs Cat game. This \textit{turn ends} code, means that this code will run at the end of each turn. This is where we want to check the winning condition for this game, because we need to let the participants finish their attacks before checking if one of them is dead (i.e. their HP is below 1). In this context, \textit{player} is the one who just ended a turn, and \textit{enemy} is the enemy of \textit{player}. Also note that the Cat character definition in Listing \ref{KvCchars} have defined its own \textit{turn ends} where the Cat's \textit{HP} is restored. The Cat's \textit{turn ends} is run before the global \textit{turn ends} rules, which will restore its \textit{HP} if the Cat was dead.
+
+\begin{lstlisting}[language=KAPAOOW, caption={The Knight AI},label=KvCaiknight]
+select Knight
+	if HP < 100 and HealthPotions > 0 then
+		use HealthPotion
+	else
+		use Slap
+	end if
+\end{lstlisting}
+Listing \ref{KvCaiknight} is where we define an AI for the Knight and Listing \ref{KvCaicat} defines the Cat. If we were to \textit{select} and define only one AI player, then there will have to be at least one human player controlling the other.
+
+At lines 1-6 the Knight character is selected and its behaviour defined. The Knight is able to drink health potions. At line 2 we check the Knight's current hit point (\textit{HP}) and if it is below 100 we want the knight to use a health potion. Then we also need to make sure we have a health potions. If the two conditions are met the Knight drinks a health potions and restores 50 hit points as defined in the character definition. If the Knight does not drinks a potion, then he will use his attack (\textit{use Slap}). The Knight can only do one of two because the turn ends after an action is used.
+
+\begin{lstlisting}[language=KAPAOOW, caption={The Cat AI},label=KvCaicat]
+select Cat
+	use Scratch
+\end{lstlisting}
+At lines 1-2 the Cat character is selected and its behaviour defined. The Cat AI can only do one thing; \textit{use Scratch}.
+
+\subsection*{Russian roulette}
+
+The next example is a somewhat simple game. This game only consists of game rules, there is not defined any AI-player.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Russian roulette game example},label=russian]
+start
+	random of 2
+		1 case
+			skip turn
+	end random
+end start
+
+characters
+	character Revolver
+		action Trigger
+			Shots = Shots + 1
+			random of 6
+				1 case
+					enemy wins
+			end random
+		end action
+		
+		Shots = 0
+		
+		turn ends
+			if Shots = 0
+				enemy wins
+			else
+				Shots = 0
+			end if
+		end turn
+	end character
+end characters
+\end{lstlisting}
+Lines 1-6 defines \textit{start}, which will only be run at the beginning of the game. Then the player who by default goes first, have 50\% chance of skipping the turn and thereby makes it random who has to shot first.
+
+Lines 9-27 defines a Revolver character. Only one action is defined here; \textit{Trigger}. The actions consists of a 1 in 6 chance of dying and thus the enemy wins. Nothing is preventing a player to skip their turn, that would be unfair in this game. Lines 20-26 makes sure that if a turn is ended then we check to see if the Revolver fired any \textit{Shots}. If it did not fire any \textit{Shots} the enemy wins. Line 25 resets the \textit{Shots} fired to 0.
+
+\subsection*{Mage-a-Ganza}
+
+This game consists only of Mage characters. The game is as an example of how a character can defend itself against incoming damage.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Mage-a-Ganza: Attack types},label=MaGtypes]
+attack types
+	Magic
+	Melee
+end types
+\end{lstlisting}
+Listing \ref{MaGtypes} shows the attack types a Mage can use. In the character definition we will use the types to show how damage is granted a type, and also how a character can defend from the attack type.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Mage-a-Ganza: Definition of characters},label=MaGchars]
+characters
+	character Mage
+		Health = 100
+		
+		action Fireball
+			damage enemy.Health by 30 using Magic
+			skip turn
+		end action
+		
+		action StickHit
+			damage enemy.Health by 20 using Melee
+			skip turn
+		end action
+		
+		defend Health from Magic
+			random of 3
+				1 case
+					damage Health by value
+				2 cases
+					reflectingValue = value + 10
+					damage enemy.Health by reflectingValue using Magic
+					message reflectingValue " damage reflected"
+			end random
+		end defend
+	end character
+end characters
+\end{lstlisting}
+Listing \ref{MaGchars} shows the Mage character. At line 3 the Mage is given 100 \textit{Health} points. Lines 5-8 is an action called \textit{Fireball}. At line 6 the \textit{Fireball} action damages the enemy's \textit{Health} by 30 points using \textit{Magic}. Line 7 ends the turn.
+
+Lines 10-13 is an action called \textit{StickHit}. At line 11 the \textit{StickHit} action damages the enemy's \textit{Health} by 20 points using \textit{Melee}. Line 12 ends the turn.
+
+Lines 15-24 is a defend statement. Line 15 says that if there is any incoming \textit{Magic} damage to \textit{Health} this block will overrule what happens to the \textit{Health} attribute. Lines 16-23 is a random case definition, with three different outcomes. Lines 17-18 have $\frac{1}{3}$ chance of executing. \textit{value} is the amount of damage that was initially suppose to damage this Mage, and in this case the attack was successful.
+
+Lines 19-22 is a case with a $\frac{2}{3}$ chance of executing. Lines 20-21 reflects the incoming damage, and adds 10 points of damage to the \textit{reflectingValue}, back to the enemy. Notice that the reflecting damage is using \textit{Magic}, and that the defend statement defends against \textit{Magic}. A Mage battle have a $\frac{2}{3}^7 \frac{1}{3} = 0,02\%$ chance of ending by the first attack if that attack is \textit{Fireball}. Because it might seem odd using \textit{Fireball} and then taking damage yourself, a message is added at Line 22 to inform players about what is happening. If the \textit{reflectingValue} is $40$ then message is "40 damage reflected".
+
+\begin{lstlisting}[language=KAPAOOW, caption={Mage-a-Ganza: Winning conditions},label=MaGturn]
+turn ends
+	if enemy.Health <= 0 then
+		player wins
+	else if player.Health <= 0 then
+		enemy wins
+	end if
+end turn
+\end{lstlisting}
+Listing \ref{MaGturn} is similar to the winning conditions for Knight vs Cat shown in Listing \ref{KvCturn}, but this one is slightly different. The Mage can reflect damage and this means that using \textit{Magic} against a Mage, you might end up dying from the damage that could be reflected back at you. I.e. it is possible to die in your own turn.

@@ -1,0 +1,133 @@
+\section{Structure}
+A good structure in a programming language can help enhance the readability and learnability, and when designing the structure of KAPAOOW we had to ensure that we kept this in mind. This section will explain the structure of KAPAOOW and explain the different blocks the game creator has at his disposable when designing a game. The order in which the blocks are executed is also explained.
+
+
+\subsection*{Blocks in the ruleset}
+A ruleset made in KAPAOOW consists of multiple blocks. The type of block defines when it will be executed, what it may contain, and how the variables inside it will be treated. The following list describes the code blocks allowed in rulesets.
+
+\begin{description}
+\item[Attack types]
+The \textit{attack types} block is used to list all the attack types allowed in the game. An example of an \textit{attack types} block is shown in Listing \ref{attackblock}.
+
+This block is introduced to meet the \textit{reliability} criteria in Section \ref{sec:criteria} and thereby help the game creator when using attack types. Without this block it would be possible to attack with "Fire" and by mistake defend from "Fiire" which would cause the defence not to function. By having this block it is possible to check whether an attack type is a part of the game to avoid these typing errors.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of an \textit{attack types} block},label=attackblock]
+attack types
+	Magic
+	Melee
+	Fire
+end types
+\end{lstlisting}
+
+
+
+
+\item[Start]
+The code first executed in a game is the \textit{Start} block defined in the ruleset. This block can be used to set special game variables or select which of the participants has the first turn in the game. An example of a \textit{start} block is shown at Listing \ref{startblock}.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of a \textit{start} block. If the first participant selected the "Wizard" character, the other participant has the first turn},label=startblock]
+start
+	if player is Wizard then
+		skip turn
+	end if
+end start
+\end{lstlisting}
+
+
+
+\item[Turn begins]
+The \textit{turn begins} block is executed at the beginning of each turn. It can for example be used to prepare the game to the new turn or checking winning conditions. Listing \ref{beginsblock} shows an example of a \textit{turn begins} block where the currently playing participant regenerates 5 health points, unless it has 95 or more health points. In that case the \textit{Health} variable is set to 100.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of a \textit{turn begins} block},label=beginsblock]
+turn begins
+	if player.Health < 95 then
+		player.Health = player.Health + 5
+	else
+		player.Health = 100
+	end if
+end turn
+\end{lstlisting}
+
+
+
+
+
+\item[Characters]
+This block contains the characters of the game. An example of a \textit{characters} block with a single \textit{character} block is shown in Listing \ref{charactersblock}. Each character has a name. In the example the character's name is "Wizard". A \textit{character} block may contain attributes of the character, \textit{defend} blocks, \textit{action} blocks, a \textit{turn begins} block, and a \textit{turn ends} block. A \textit{defend} block is used to defend a specific attribute. \textit{Defend} blocks are executed when the defended attribute is being damaged. In the example, the character reduces the damage of incoming "Magic" attacks by half. The \textit{action} blocks are the actions available to both humans and AI. An \textit{action} can for example be used to heal the character or damage the \textit{enemy}'s health. The example shows two \textit{action} blocks. When the action is used \texttt{skip turn} will be executed which ends current turn. The \textit{turn begins} and \textit{turn ends} blocks is executed just before and after the human/AI actions, and can for example be used to define whether a character regenerates health or other special characteristics of a character.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of a \textit{characters} block},label=charactersblock]
+characters
+	character Wizard
+		Health = 100
+		
+		defend Health from Magic
+			Health = Health - value/2
+		end defend
+		
+		action Lightning
+			damage enemy.Health by 40 using Magic
+			
+			skip turn
+		end action
+		
+		action Healing
+			if player.Health < 60 then
+				player.Health = player.Health + 40
+			else
+				player.Health = 100
+			end if
+			
+			skip turn
+		end action
+	end character
+end characters
+\end{lstlisting}
+
+
+
+
+
+
+\item[Turn ends]
+The \textit{turn ends} block works like \textit{Turn begins} except that this block is executed at the end of a turn. Listing \ref{endsblock} a \textit{turn ends} block that checks whether the currently playing participant has won the game.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of a \textit{turn ends} block},label=endsblock]
+turn ends
+	if enemy.Health <= 0 then
+		player wins
+	end if
+end turn
+\end{lstlisting}
+
+\end{description}
+
+\subsection*{Structure of the AI}
+An AI consists of three parts: The name of the character the AI is designed for, an optional \textit{Start} block, and the AI script. The \textit{Start} block works like the \textit{Start} block in the ruleset but in the AI it is used to set special variables for the AI script. Listing \ref{aiblock} is an example of an AI that heals every fifth turn by creating a variable to hold the turn count in the \textit{start} block. The AI script is executed every time the AI is the \textit{player}. An AI script is able to use actions based on tactics, like use healing when the AI's character is low on health and so on.
+
+\begin{lstlisting}[language=KAPAOOW, caption={An example of a \textit{turn ends} block},label=aiblock]
+select Wizard
+start
+	turnNumber = 0
+end start
+
+turnNumber = turnNumber + 1
+
+if turnNumber mod 5 = 0 then // heal every fifth turn
+	use Healing
+else
+	use Lightning
+end if
+\end{lstlisting}
+
+
+\subsection*{The order of execution} \label{orderofexe}
+The order of which the code is executed in KAPAOOW is shown in Figure \ref{fig:order}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\linewidth]{img/order.png}
+\caption{The order of execution in a game}
+\label{fig:order}
+\end{figure}
+
+The \textit{Start} blocks are the first executed followed by the \textit{Turn begins} blocks. If the current player is AI-controlled, the code for the AI script is executed. The current player is human, the game will pause and allow the player to select which actions to perform through a graphical user interface. When the player chooses to end the turn, the game will continue with the \textit{turn ends} blocks. After the \textit{turn ends} blocks the \textit{player}/\textit{enemy} references will be switched and the game continues with the \textit{Turn begins} again. This cycle continues until one of the code blocks in the ruleset specifies that one of the players wins, or the game is drawn.

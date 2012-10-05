@@ -1,0 +1,12 @@
+\section{Reflection}
+Looking back there are some things we could have done better or differently.
+
+We chose not to research our intended target audience because this project was about creating a programming language, however research could have been helpful because it would have given us a better idea of how much experience the target audience would have, thus having a better idea of what criteria we should be focusing on.
+
+Even though we managed to set up a basic environment for turn-based games, KAPAOOW is very limited to fighting games, which in hindsight was not what we intended it to be.
+
+An implementation of a parser by hand is very time consuming, so using a compiler-compiler to generate a parser could have been a good idea. This would have generated a parser, based on our token definitions and EBNF. But we would have had to rewrite both of them to match the format of the compiler-compiler, which will have required a lot of work.
+
+Our implementation of the scanner has an unintended side effect. Variables, characters, and attack types, that start with the first letters of a keyword, are considered as multiple tokens instead of one. For example a variable cannot be named "loopcounter", because the scanner would create two tokens: A LOOP token and an ID token.
+
+Our interpreter is created using dedicated methods, i.e. methods in each node. In hindsight much of the interpreter could have been created using visitor patterns.

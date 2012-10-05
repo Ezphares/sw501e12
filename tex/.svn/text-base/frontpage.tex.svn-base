@@ -1,0 +1,19 @@
+\thispagestyle{empty}
+\begin{center}
+	%\includegraphics[width=15cm]{forside.png}\\~\\
+	\hrulefill\newline
+	\\
+	\begin{LARGE}	
+	\textbf{Turn-based Strategy Game}
+	\end{LARGE}
+	\\
+	\begin{large} 
+	\textbf{}
+	\end{large}\\
+	\hrulefill\newline
+	%\hrule
+	\\~\\
+	Aalborg University, Second year in Engineering, Science and Medicine\\
+	P4, Spring semester 2012	\\
+	Project group sw407f12 / 3.1.46\\
+\end{center}

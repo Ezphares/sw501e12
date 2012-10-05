@@ -1,0 +1,50 @@
+\section*{Trajectory Analysis}
+There are various factors that weigh in when designing a missile turret. This section will cover factors such as the distance to the target, whether it is within range of missilelauncher, since it would be very inefficient to have a missileturret, that shoots after targets it wont be able to hit. This section will also cover how we are going to calculate the missile trajectory, this includes what angle the missilelauncher should be in, to be able to hit the target. The section will introduce numerous formulas, some of which might serve the same purpose, but have some small chances, this is because we don't know which formula would be the best to use in our project thus it will be wise of us to cover multiple formulas.
+We have chosen to neglect factors such as wind resistance, friction and other aerodynamics.
+The variables in this section are as follows:
+\begin{itemize}
+\item \begin{math}v\end{math} is speed denoted in m/s
+\item \begin{math}\theta\end{math} is the angle of the turret adjacent to the ground
+\item \begin{math}g\end{math} is the g-force, which is ''1", since we will assume that we are at sealevel
+\item \begin{math}f\end{math} is the many meters the missile launcher is off the floor \todo{Jeg valgte med vilje at bruge floor istedet for ground, for at give læseren et indtryk af at f står for floor. Da g allerede var optaget.}
+\item \begin{math}t\end{math} is time until it impact
+\end{itemize}
+
+\subsection*{Distance}
+When calculating how far the projectile will be able to travel on a flat this formula is used:
+\begin{math}distance travelled = (v^2*\sin(2*\theta))/g\end{math}
+
+But what if we were too put our missile-launcher on a tower? Then we would need an other formula, since the tower would then be able to shoot in a downward angle, causing a negative angle. To do this we would have to use this formula:
+\begin{math}distance travelled = ((v*\cos(\theta))/g)*(v*\sin(\theta)+\sqrt{\frac{(v*\sin(\theta)^2+2*g*f)}{g}}\end{math}
+
+\subsection*{Time}
+Since our goal is to hit a moving target, we then need to know how long it will take for the missile to travel the distance from the missile launcher to the target. Since the target is moving, the target might not be in the same place from which it was seen, but it has moved within the time of the missile was fired. So the traveltime of the projectile is needed in order to predict where the target will be.
+To calculate when the projectile will hit the ground once it has been launched, we would have to use this formula
+\begin{math}traveltime = \frac{(v*\sin(\theta)+\sqrt{v*\sin(\theta)^2+2*g*f})}{g}\end{math}
+Though this formula is not complete  since it shows when the projectile will hit the floor from when it is launched, but we need to know when it will the target from a certain distance. We still don't know whether it will be used or whether it will be modified to fill our requirements.
+
+\subsection*{Angle}
+We need to figure out the angle where the trajectory of the projectile will be within the trajectory of the target.
+\begin{math}\theta=\frac{1}{2}*\arcsin(\frac{g*d}{v^2})\end{math}
+This formula however will only calculate the angle for a full trajectory that did not hit a target midway through. But there is another formula but it requires that we use a x and y coordinate, but it should be possible to create an x and y coordinate using the Xbox 360 Kinect.
+\begin{math}\theta=\arctan(\frac{v^2\pm\sqrt{v^4-g*(g*x^2+2*y*v^2)}}{g*x})\end{math}
+There is however one problem with this formula. and that is that it works in two dimensions where the y coordinate is the starting height of the projectile and x is the distance in which the projectile has to travel. There is no guarantee that the projectile will hit the target or whether the angle reflects the fastest possible trajectory to the target.
+
+\subsection*{Working formula}
+So none of the formulas described above is one that meets our requirements. It need to able to take two or three coordinates. and by using those coordinates it should be able to calculate the angle of turret.
+
+\subsection*{Conclusion to section}
+To summarize the formulas.
+The time formula is being used to calculate the time it takes for the projectile to hit a target at a specific distance. So that the NXT-brick can take that into account when predicting where the moving target will be.
+The distance formula will be used to calculate whether it is within the missile launchers range, so that it does not shoot after targets that it is impossible for it to hit.
+The angle formula is used to calculate which angle the missile launcher shall be in in order to hit the target.
+
+
+
+
+
+
+
+
+
+

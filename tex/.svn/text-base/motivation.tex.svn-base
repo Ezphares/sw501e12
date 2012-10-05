@@ -1,0 +1,26 @@
+\section{Motivation}\label{sec:motivation}
+Games have been a source for fun in many years, whether it is an electronic game, card-board game or a card game. Creating electronic games is not a task for a novice user, as it requires a deep understanding of different aspects of programming. 
+
+The focus in this project is to develop a programming language that is used for creating turn-based games, however when creating a new programming language it will always have strengths and weaknesses, depending on the purpose of the programming language. These strengths and weaknesses will influence who the target audience is. For example a general purpose language would be capable of expressing the general things that a programmer might need. On the other hand, a language focused on one thing, would make this one thing efficient and easy for the programmer to do, while making it either extremely hard, or impossible to perform operations outside the focus of the language.
+
+Deciding on the purpose of the programming language is therefore important as it has a direct impact on the implementation of most areas of the language.
+
+When creating a turn-based game the game creators have several things to keep track of, for example whose turn it is, possible attributes and variables, and perhaps a turn number to keep track of the turn count in game.
+
+We wanted the game creators to spend less time worrying about setting up a basic environment and more about creating the game, while letting the language take care of the rest. The focus of our language therefore became to ease the creation of turn-based games, and make it easier for the game creators to start making turn-based games.
+
+We have named our language KAPAOOW.
+
+
+%All programming languages have their strengths and weaknesses so it is important to know the purpose of a a programming language when making it. Knowing the purpose of the programming language can help throughout the design process to help enhance the strengths and minimise the weaknesses.
+%
+%We all have a special interest in games, and designing a language especially for turn-based games interested us a lot.
+%
+%When creating a turn-based game the user has several things to keep track of, for example whose turn it is, possible attributes, and perhaps what turn number it is if there is a turn limit.
+%
+%We do not think a user should spend time worrying about setting up a basic environment.
+%We want the user to focus on creating games and leave as much as possible to the language.
+%
+%This is why we want to ease the creation of turn-based games and supply functionality in our language that makes it easier for the user to start making turn-based games.
+%
+%We have named our language KAPAOOW.

@@ -1,0 +1,12 @@
+\chapter*{Preface}
+This project was written as the 4th semester project by group SW407f12 - Software students from the Department of Computer Science at Aalborg University in the Spring of 2012. The report documents the creation of the turn-based game language, KAPAOOW. This includes a syntactically and semantic analysis of KAPAOOW. This report also covers the process of developing an interpreter for the language.
+
+We have included our knowledge from two of our semester courses, \textit{Languages and Compilers} and \textit{Syntax and Semantics}. The theory Chapters \ref{chap:lantheory} and \ref{chap:inttheory} are primarily based on the books related to our courses.
+\\\\When reading the report, there are a few things the reader should be aware of:
+\begin{itemize}
+\item \textit{AI} is an abbreviation of \textit{artificial intelligence}, and is used throughout the project.
+\item When a reference to a source of a section or paragraph is given, the number of the source is written inside square brackets $[\;]$. The number is a reference to the bibliography list on page \pageref{chap:bib}.
+\item When the production rules of the EBNF exceeds the page margin, we use the arrow "$\hookrightarrow$" to symbolise that the previous line continues at the arrow.
+\item The programmer who will be using KAPAOOW, to create games, will be referenced to as "game creators".
+\end{itemize}
+We would like to thank our supervisor Danny Bøgsted Poulsen for the feedback he has given throughout the project.

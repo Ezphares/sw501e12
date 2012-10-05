@@ -1,0 +1,93 @@
+\section{Parser}
+It is possible to generate a parser with a lot different tools, for example JavaCC\cite{javacc}, but we have created our own parser. Our parser is a recursive descent parser with a lookahead of 1.
+
+The parser consists of a lot different nodes that we build an abstract syntax tree with. There is a lot different nodes and they all follow the same pattern, because of that we are only going to show some examples of nodes.
+
+All the nodes of the abstract syntax tree inherits from the \textsf{Node} class. There is a class for each non-terminal that is shown in Appendix \ref{app:EBNF}. There is a lot different nodes and they all follow the same pattern, because of that we are only going to show the \textsf{Program} node, the \textsf{Decimal} node, and the \textsf{Node} class they inherit from. Figure \ref{fig:node} shows an illustration of these classes.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{img/nodeklasse.png}
+\caption{Node classes}
+\label{fig:node}
+\end{figure}
+
+\begin{lstlisting}[language=Java,caption={Node class},label=lst:node, morekeywords={foreach,String,List}]
+abstract class Node{
+	List Children;
+	boolean Accepted = false;
+	
+	boolean Accepts(Node node) {
+		if (node.Accepted) {
+			this.Children.add(node);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	void AcceptIt() {
+		this.Accepted = true;
+	}
+}
+\end{lstlisting}
+Listing \ref{lst:node} shows the \textsf{Node} class that all the nodes will inherit from. It is explained line by line here:
+
+\begin{description}
+\item[Line 2] Each node have a list of children, this is necessary to create an abstract syntax tree.
+\item[Line 3] Each node have a boolean called \textit{Accepted}. This boolean determines whether the node is accepted or not. During the parsing we check this boolean. If \textit{Accepted} is \texttt{false} at the time where we need it to be \texttt{true}, then there is a syntax error in the KAPAOOW code being parsed.
+\item[Line 5-12] The method \texttt{Accepts} have a \textit{Node} as a parameter. The next listing will show how this is used. The method should simply determine whether the \textit{node} is accepted or not.
+\item[Line 6-9] If the \textit{node} is accepted, then expand the abstract syntax tree by adding the parameter \textit{node} to this node's \textit{children}.
+\item[Line 10-11] Return \texttt{false} if the \textit{node} is not accepted.
+\item[Line 14-16] The method \texttt{AcceptIt} only sets the \textit{Accepted} boolean to \texttt{true}.
+\end{description}
+\begin{lstlisting}[language=Java,caption={Program node},label=lst:programnode, morekeywords={foreach,String,List,or}]
+class Program extends Node{
+	Program(TokenStream tokenStream) {
+		while (tokenStream.Accepts("NEWLINE"));
+		
+		if(this.Accepts(new Rules(tokenStream)) or this.Accepts(new Ai(tokenStream))) {
+			while (tokenStream.Accepts("NEWLINE"));
+			
+			if (tokenStream.EndOfStream)
+				this.AcceptIt();
+			else
+				ParserError();
+		}
+		else
+			ParserError();
+	}
+}
+\end{lstlisting}
+Listing \ref{lst:programnode} shows the \textsf{Program} class that inherits from \textsf{Node}. \textsf{Program} is the start rule in the EBNF. It is explained line by line here:
+
+\begin{description}
+\item[Line 2-15] When a new instance of the non-terminal \textsf{Program} is created, the constructor is run. The constructor have the \textit{tokenStream} as a parameter. \textit{TokenStream} is a list of tokens with a few methods to help manage the tokens.
+\item[Line 3] \textsf{Program} is the start variable, and nothing have been parsed yet. Preceding \textsf{Rules} and/or \textsf{Ai} is an optional amount of newlines. Each time the \textit{tokenStream} has reached a newline it \textit{Accepts} it by incrementing the index of the current token by one and returns \texttt{true}. The \texttt{while} will break when there is no more newlines.
+\item[Line 5] This is where we recursively descent. We can either parse the \textsf{Rules} of the game or the \textsf{Ai}. The \texttt{Accepts} method is from the \textit{Node} class in Listing \ref{lst:node}, the parameter here is either \textsf{Ruleset} or \textsf{Ai}. We recursively descent into the constructor of these non-terminals, and their constructor will determine whether it is accepted or not. Recall that the one that is accepted, is added to the \textit{children} lists.
+\item[Line 6] This loop does the same as the one on Line 3.
+\item[Line 8-9] If we reached the end of the \textit{tokenStream}, the \textsf{Program} is accepted.
+\item[Line 10-11] The only thing allowed after \textsf{Ruleset} and \textsf{Ai} is newlines. If there is some other token left here, we throw an exception with an appropriate message.
+\item[Line 13-14] If there is not any accepted \textsf{Ruleset} or \textsf{Ai}, then throw an exception with an appropriate error message.
+\end{description}
+\begin{lstlisting}[language=Java,caption={Decimal node},label=lst:decimalnode, morekeywords={foreach,String,List,BigDecimal}]
+class Decimal extends Node {
+	BigDecimal Value;
+	
+	Decimal(TokenStream tokenStream) {
+		if (tokenStream.Accepts("DECIMAL")) {
+			this.Value = tokenStream.GetLastAcceptedToken();
+			this.AcceptIt();
+		}
+	}
+}
+\end{lstlisting}
+Listing \ref{lst:decimalnode} shows the \textsf{Decimal} class that inherits from \textsf{Node}. \textsf{Decimal} is one of the leafs on the abstract syntax tree. It is explained line by line here:
+
+\begin{description}
+\item[Line 2] This node is a leaf in the abstract syntax tree. By adding children to the parsetree, you build the structure of the tree, but the structure itself does not contain the values of leafs like \textsf{Decimal}. The value of accepted DECIMAL tokens is therefore stored in a variable called \textit{Value}.
+\item[Line 4-9] The constructor method have the \textit{tokenStream} as a parameter.
+\item[Line 5-8] If the current token in \textit{tokenStream} is a DECIMAL token it is accepted as a \textsf{Decimal}.
+\item[Line 6] The \texttt{BigDecimal} \textit{Value} is set. Since the DECIMAL token was just accepted, the \textit{tokenStream} moves the index to the next token in the stream, so we need to extract the value of the DECIMAL token by using the \textit{GetLastAcceptedToken} method.
+\item[Line 7] If the token is a \textsf{Decimal}, then accept it.
+\end{description}

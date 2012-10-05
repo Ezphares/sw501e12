@@ -1,0 +1,54 @@
+
+
+ATTACKTYPES HER
+\begin{lstlisting}[language=KAPAOOW, caption={Define attack types},label=attacktypes]
+attack types
+	Magic
+end types
+\end{lstlisting}
+
+
+CHARACTERS HER MED ACTION
+\begin{lstlisting}[language=KAPAOOW, caption={Define Characters},label=characters]
+characters
+	Character Knight
+		Health = 100 //Define multiple variables such as 				healthpotions and mana
+		
+		action Slap
+			enemy.Health = enemy.Health - 15
+			next turn
+		end action		
+		
+	end Character	
+end characters
+\end{lstlisting}
+
+
+ACTIONS HER MED MODIFICEING AF ENEMY HP
+\begin{lstlisting}[language=KAPAOOW, caption={Actions},label=action]
+		action Slap
+			enemy.Health = enemy.Health - 15
+			next turn
+		end action
+\end{lstlisting}
+
+
+RANDOM læg mærke til case og cases
+\begin{lstlisting}[language=KAPAOOW, caption={Random},label=random]
+	random of 10
+		3 cases
+			enemy.Health = enemy.Health - 15
+		1 case
+			HP = HP + 5
+	end random			
+\end{lstlisting}
+
+DEFEND med USING, VALUE, RANDOM
+\begin{lstlisting}[language=KAPAOOW, caption={Defend},label=defend]
+		defend Health from Magic
+			 		reflectingValue = value + 10
+			 		damage enemy.HP by reflectingValue using magic
+			 end random 
+		end defend
+\end{lstlisting}
+

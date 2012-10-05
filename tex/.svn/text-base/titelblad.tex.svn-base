@@ -1,0 +1,77 @@
+\thispagestyle{empty}
+\begin{titlepage}
+\begin{nopagebreak}
+\setcounter{page}{3}
+{\samepage 
+\begin{tabular}{r}
+\parbox{\textwidth}{  \raisebox{11mm}{\includegraphics[height=1.2cm]{img/logo.jpg}}
+\hfill \parbox{4.9cm}{\begin{tabular}{l}
+{\sf\small \textbf{Department of Computer Science }}\\
+{\sf\small  \textbf{Software Engineering}} \\
+{\sf\small Selma Lagerlöjs Vej 300} \\
+{\sf\small Telephone +45 9940 9940} \\
+{\sf\small +45 9940 9798} \\
+{\sf\small http://www.cs.aau.dk}
+\end{tabular}}}
+\\
+\end{tabular}
+
+\begin{tabular}{cc}
+\parbox{6cm}{
+\begin{description}
+
+\item {\bf Title:} 
+
+Turn-based Strategy Game
+  
+\item {\bf Subject:} 
+Design, definition and implementation of programming languages
+
+\end{description}
+
+\parbox{8cm}{
+
+\begin{description}
+\item {\bf Project period:}\\
+   P4, Spring semester 2012\\
+  \hspace{4cm}
+\item {\bf Project group:}\\
+  SW407f12\\
+  \hspace{4cm}
+\item {\bf Attendees:}\\
+Jacob Karstensen Wortmann \\
+Jesper Riemer Andersen \\
+Kent Kostelac \\
+Nicklas Andersen \\
+Sam Sepstrup Olesen \\
+Simon Reedtz Olesen \\
+Tom Petersen\\
+
+  \hspace{2cm}
+\item {\bf Supervisor:}\\
+Danny Bøgsted Poulsen \\
+\end{description}
+}
+\begin{description}
+\item {\bf Finished:} $25/05-2012$
+\item {\bf Number of pages:} \pageref{lastpage}
+\item {\bf Appendix pages:} 13
+\end{description}
+\vfill } &
+\parbox{7cm}{
+  \vspace{.15cm}
+  \hfill 
+  \begin{tabular}{l}
+  {\bf Synopsis:}\bigskip \\
+  \fbox{
+    \parbox{6.5cm}{\bigskip
+     {\vfill{\small \input{tex/synopsis.tex}
+     \bigskip}}
+     }}
+   \end{tabular}}
+\end{tabular}}
+\\ \\
+\noindent{\footnotesize\emph{The content of this rapport can be used freely; however publication (with source material) may only occur in agreement with
+the authors.}}
+\end{nopagebreak}
+\end{titlepage}

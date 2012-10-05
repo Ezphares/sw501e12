@@ -1,0 +1,32 @@
+\section{Lexical Analysis}\label{sec:lexanal}
+The lexical analysis is done by the \textit{scanner}. The scanner's job is to convert a text stream into a stream of \textit{tokens}.
+
+\subsection*{Token}
+A token consists of a \textit{token type} and a corresponding \textit{lexeme}. The token type is the name of the group which the corresponding lexeme belongs to. An example of a token type could be DECIMAL. In that case the lexeme would be a decimal like 234.1 or 7.93. But without a clear definition of a decimal, we do not know which of the following are decimals:
+\[23.45 \qquad 37 \qquad .81\]
+In order to find a token like that in the text stream read by the scanner, you first need to define which lexemes it should match, and that is done by using \textit{token definitions}.
+
+\subsection*{Token Definitions}
+A common way to match lexemes are by using regular expressions. A token definition would then consist of the token type to define and a regular expression pattern which should recognize only the lexemes of the token type. The following is an example of a token definition:
+\[\mathrm{DECIMAL} \qquad "[0-9]^+ [\backslash.[0-9]^+]?"\]
+
+In cases where multiple different token definitions are matching the current text stream at the same time, the \textit{lexical precedence} will determine which of the token definitions should match. The lexical precedence is simply the order in which the token definitions are defined.
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l l}
+\textbf{Token type} & \textbf{Regular expression} \\ 
+\hline 
+ABC & "abc" \\ 
+A & "a" \\
+\end{tabular}
+\caption{An example of lexical precedence. If the order of the token definitions were reversed, it would not match the same language.}
+\label{table:lexprecedence}
+\end{table}
+If the token definitions in Table \ref{table:lexprecedence} were used to match tokens in the text $abca$, it would produce the token stream: \{ABC, A\}.
+
+Firstly the scanner will try to match the token definition of ABC, which matches the beginning of the text, and produces a token. Then the matched lexeme will be removed from the text stream, and we are left with the text $a$. We will now try to match that to the definition of ABC, but because that does not match, we will continue and try and match the text to the next token definition. And that is the token definition of A, which matches the beginning of the text and produces a token. The matched lexeme is then removed from the text stream. The text stream is now empty and the scanner stops and returns the token stream. The scanner will return an error in the case that there were no matches in the text stream. If the order of the token definitions in Figure \ref{table:lexprecedence} where reversed, the token definition of A would match first, and the rest of the text stream, $bca$, would not be able to match anything, and the scanner would then return an error. 
+
+\subsection*{Non-significant tokens}
+Many programming languages also has some tokens it does not use and those should be ignored. Those are called \textit{non-significant}. Examples of typical non-significant tokens are comments and white-space such as newlines, spaces, and tabbing. To allow the scanner to distinguish between significant tokens and non-significant tokens, a flag is added to each token definition, telling whether to ignore the token or not. When the scanner matches a token that is marked as non-significant it removes the matched lexeme from the text stream and continues to match the rest of the text stream. The only difference between a non-significant token and a significant token is that the significant tokens are added to the token stream and the the non-significant tokens are not.

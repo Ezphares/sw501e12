@@ -1,0 +1,117 @@
+\section{Execution}
+The execution of KAPAOOW is implemented using recursive interpretation. The recursive interpretation works by executing the abstract syntax tree directly. This is done by calling an \textit{Execute} method in a node in the abstract syntax tree. This method then recursively traverses the tree by calling the \textit{Execute} methods in some of the branches from the node dependant of the type of node.
+
+The references of \textit{Start}, \textit{Turn begins}, \textit{Turn ends}, \textit{Action}, \textit{Defend}, and \textit{AI} blocks, are all saved in the environment. These blocks can then be executed when needed, in the order of execution described on page \pageref{orderofexe}.
+
+\begin{lstlisting}[language=Java, caption={The \textit{Execute} method of the \textit{Start} block},label=exeStart]
+public void Execute(VarEnvironment env) throws VarEnvironmentException, GameException
+{
+	for (Node statement : this.Children)
+	{
+		((Statement)statement).Execute(env);
+	}
+}
+\end{lstlisting}
+
+Listing \ref{exeStart} shows the \textit{Execute} method of the \textit{Start} block. When the \textit{Start} block is executed, it simply executes every statement it contains. All of the "block" nodes in the language works as simple as just directing the execution further down the tree. The \textit{Execute} method needs a variable environment as parameter. This is the variable environment which is created during the semantic analysis. The variable environment is passed down through the tree as the nodes are executed.
+
+Every \textit{Execute} method is able to throw two kinds of exceptions: \textit{VarEnvironmentException} and \textit{GameException}. \textit{VarEnvironmentException}s are thrown by the variable environment if an error occurs e.g. if an assignment is made to a variable that is unknown to the variable environment. Errors like these should never occur in the finished software. The other exception, \textit{GameException}, on the other hand is not used for error messages but is instead thrown at special occasions like when \texttt{player wins} is being executed because exceptions are a very handy way to stop the execution. Listing \ref{exeDraw} shows how the \textit{Draw} statement throws a \textit{GameException}. The parameter to the \textit{GameException} is the type of \textit{GameException}, in this case \textit{Draw}. The throwable types are: \textit{SkipTurn}, \textit{PlayerWins}, \textit{EnemyWins}, and \textit{Draw}.
+\begin{lstlisting}[language=Java, caption={The \textit{Execute} method of the \textit{Draw} statement},label=exeDraw]
+public void Execute(VarEnvironment env) throws GameException
+{
+	throw new GameException(GameExceptionType.Draw);
+}
+\end{lstlisting}
+
+The next code snippet in Listing \ref{exeIf} shows the \textit{Execute} method in an \textit{If} statement. It is used as an example, because it directs the execution further down the tree like the \textit{Start} block but the nodes executed depends on conditions.
+
+The \textit{If} statement can have the following kinds of branches: A \textit{Conditions} node, a number of \textit{Statement} nodes, a number of \textit{ElseIf} nodes, and finally an optional \textit{Else} node.
+
+\begin{lstlisting}[language=Java, caption={The \textit{Execute} method of the \textit{If} statement},label=exeIf]
+public void Execute(VarEnvironment env) throws VarEnvironmentException, GameException
+{
+	Conditions conditions = (Conditions) this.Children.get(0);
+	
+	if (conditions.GetValue(env))
+	{
+		for (Node statement : this.Children)
+		{
+			if (statement instanceof Statement)
+			{
+				((Statement) statement).Execute(env);
+			}
+		}
+	}
+	else
+	{
+		for (Node child : this.Children)
+		{
+			if (child instanceof ElseIf)
+			{
+				if (((Conditions) child.Children.get(0)).GetValue(env))
+				{
+					((ElseIf) child).Execute(env);
+					break;
+				}
+			}
+			else if (child instanceof Else)
+			{
+				((Else) child).Execute(env);
+				break;
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+\begin{description}
+\item[Line 5-14]
+It is checked whether the conditions in the \textit{Conditions} block evaluates to true. If it is true each \textit{Statement} node is executed. The \textit{GetValue} runs recursively on the tree like the \textit{Execute} method but returns a boolean telling whether the conditions are true or false.
+
+\item[Line 15-33]
+If \textit{Conditions} evaluates to false the value of each \textit{ElseIf} node's \textit{Conditions} are evaluated. If one of them evaluates to true, then \textit{ElseIf} node is executed. If no \textit{ElseIf} node's \textit{Conditions} evaluated to true, the \textit{Else} node is executed, if it exists.
+\end{description}
+
+
+
+
+So far the examples have only passed the variable environment through the tree, they have not directly used it. The following example in Listing \ref{exeAssign} shows how the \textit{Assignment} node uses the variable environment to change the value of variables.
+
+\begin{lstlisting}[language=Java, caption={The \textit{Execute} method of the \textit{Assignment} statement},label=exeAssign]
+public void Execute(VarEnvironment env) throws VarEnvironmentException
+{
+	Variable variable = (Variable)this.Children.get(0);
+	BigDecimal value = ((Expression)this.Children.get(1)).GetValue(env);
+	
+	if (variable.Children.get(0) instanceof Id)
+	{
+		Id id = (Id)variable.Children.get(0);
+		env.Set(id.Name, value, scope);
+	}
+	else if (variable.Children.get(0) instanceof Participant)
+	{
+		ParticipantType participant = ((Participant)variable.Children.get(0)).Type;
+		Id id = (Id)variable.Children.get(1);
+		
+		if (participant == ParticipantType.Player)
+		{
+			env.Player.Attributes.Set(id.Name, value);
+		}
+		else if (participant == ParticipantType.Enemy)
+		{
+			env.Enemy.Attributes.Set(id.Name, value);
+		}
+	}
+}
+\end{lstlisting}
+
+\begin{description}
+\item[Line 3-4]
+The \textit{Variable} and the value of the \textit{Expression} is stored. A \textit{Variable} consists of either: An \textit{Id} node used for regular variables, A \textit{Participant} and \textit{Id} node used for character variables, or a \textit{Value} node which is a special variable that can only be used inside a \textit{Defend} block and holds the value of the incoming damage.
+
+\item[Line 6-10]
+If the \textit{Variable} is a regular variable the value of the variable is changed in the variable environment.
+
+\item[Line 11-24]
+If the \textit{Variable} is a character variable like \texttt{enemy.Health} the value of the relevant participant's character variable is changed in the variable environment.
+\end{description}

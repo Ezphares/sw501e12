@@ -1,0 +1,3 @@
+\section{Target audience}\label{sec:targetaudience}
+The target audience for our language are people that want to start developing games themselves. Game developing usually demand a certain kind of knowledge regarding game engines, which demands that the game developer has a knowledge of physics, AI and graphics of that game engine. This makes it hard for a person with little programming experience to start creating a simple game.
+With this in mind we want to develop a language, which enables people with little programming experience to design their own sequential games.

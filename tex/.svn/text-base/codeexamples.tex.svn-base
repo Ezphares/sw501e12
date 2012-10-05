@@ -1,0 +1,119 @@
+\section{Code Examples}
+In this section we show some game examples of what the language KAPAOOW looks like.
+
+\subsection*{Knight vs Cat}
+
+This game consists of a battle between a Knight and a Cat. They both have hit points, called \textit{HP}, to determine when one of them dies. They are also both have attacks that affects each others hit points. This game is split into pieces so that each piece can easily be explained individually.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Knight character definition},label=KvCknight]
+Character Knight
+	HP = 400 // hit points
+	HealthPotions = 10
+	
+	action Slap
+		enemy.HP = enemy.HP - 15
+		next turn
+	end action
+	
+	action HealthPotion
+		if HealthPotions > 0 then
+			HealthPotions = HealthPotions - 1
+			HP = HP + 100
+		end if
+		
+		next turn
+	end action
+end Character
+\end{lstlisting}
+
+Listing \ref{KvCknight} is the Knight character definition. At lines 2-3 the Knight is granted 400 hit points and 10 health potions. At lines 5-8 an action called \textit{Slap} is shown. \textit{Slap} is an attack that does 15 damage points to the Cat. Notice that in this example the damage is static, instead it could have been an attribute, that would allow us to change the Knights damage according to other events. After doing 15 points of damage, the turn is ended by the \textit{next turn} statement.
+
+At lines 10-17 the action \textit{HealthPotion} is defined. The action illustrates the use of a potion that grants the Knight 100 additional hit points, and makes sure to decrement the number of potions left. After drinking a potion the turn ends by the \textit{next turn} statement at line 16.
+
+\begin{lstlisting}[language=KAPAOOW, language=KAPAOOW, caption={Cat character definition},label=KvCcat]
+Character Cat
+	Lives = 9
+	HP = 100
+	
+	turn ends
+		if HP <= 0 and Lives > 0
+			HP = 100
+			Lives = Lives - 1
+	end turn
+	
+	action Scratch
+		random of 10
+			8 cases
+				enemy.HP = enemy.HP - 25
+			1 case
+				enemy.HP = enemy.HP - 100 // critical
+		end random
+		
+		next turn
+	end action
+end Character
+\end{lstlisting}
+
+Listing \ref{KvCcat} is the Cat character definition. At line 2 the Cat is granted 9 lives and at line 3 the Cat is granted 100 hit points.
+
+At lines 5-9 is some rules that only apply to the Cat. At the end of each turn line 6 will check if the Cats \textit{HP} is below 1 and if it has more lives left to resurrect with. If so, the Cats HP is restored to 100 at line 7 and its lives decremented by 1 at line 8.
+
+Action \textit{Scratch} is defined at lines 11-20. This action can decrement the Knights hit points by either 25 or 100 hit points. At lines 12-17 is a random case definition. Line 12 says there is 10 different outcomes. Line 13 says that 8 out of the 10 different outcomes, this case is run. Line 15 says that 1 out of the 10 different outcomes, this case is run. The Cat has 10\% chance of hitting a critical scratch. But since only 9(8+1) of the 10 outcomes were defined, the Cat also has 10\% chance of missing an attack. The \textit{Scratch} action ends the turn by the \textit{next turn} statement at line 19.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Winning conditions},label=KvCturn]
+turn ends
+    if enemy.HP <= 0 then
+        player wins
+    end if
+end turn
+\end{lstlisting}
+
+Listing \ref{KvCturn} is the winning conditions for the Knight vs Cat game. This \textit{turn ends} code, means that this code will run at the end of each turn. This is where we want to check the winning condition for this game, because we need to let the participants finish their attacks before checking if one of them is dead (i.e. their HP is below 1). In this context, \textit{player} is the one who just ended a turn, and \textit{enemy} is the enemy of \textit{player}. Also note that the Cat character definition in Listing \ref{KvCcat} have defined its own \textit{turn ends} where the Cats \textit{HP} is restored. The Cats \textit{turn ends} is run before the global \textit{turn ends} rules, which will restore its \textit{HP} if the Cat was dead.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Knight AI},label=KvCaiknight]
+select Knight
+	if HP < 100 and HealthPotions > 0 then
+		use HealthPotion
+	else
+		use Slap
+	end if
+\end{lstlisting}
+
+Listing \ref{KvCaiknight} is where we define an AI for the Knight and Listing \ref{KvCaicat} defines the Cat. If we were to \textit{select} and define only one AI player, then there will have to be at least one human player controlling the other.
+
+At lines 1-6 the Knight character is selected and its behaviour defined. The Knight is able to drink health potions. At line 2 we check the Knights current hit point (\textit{HP}) and if it is below 100 we want the knight to use a health potion. Then we also need to make sure we have a health potions. If the two conditions are met the Knight drinks a health potions and restores 50 hit points as defined in the character definition. If the Knight does not drinks a potion, then he will use his attack (\textit{use Slap}). The Knight can only do one of the two because the turn ends after an action is used.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Cat AI},label=KvCaicat]
+select Cat
+	use Scratch
+\end{lstlisting}
+
+At lines 1-2 the Cat character is selected and its behaviour defined. The Cat AI can only do one thing; \textit{use Scratch}.
+
+\subsection*{Russian roulette}
+
+The next example is a very simple game. This game definition only consists of game rules, which means there is not defined any AI-player.
+
+\begin{lstlisting}[language=KAPAOOW, caption={Russian roulette game example},label=russian]
+start
+    random of 2
+        1 case
+            next turn
+    end random
+end start
+
+character Revolver
+    action Trigger
+        random of 6
+            1 case
+                enemy wins
+        end random
+    end action
+end character
+\end{lstlisting}
+
+Lines 1-6 defines \textit{start}, which will only be run at the beginning of the game. Then the player who by default goes first, have 50\% chance of skipping the turn.
+
+Lines 8-15 defines a Revolver character. Only one action is defined here; \textit{Trigger}. The actions consists of a 1 in 6 chance of dying and thus the enemy wins.
+
+In this game the only participants are human players, which is why we do not need to define any AIs use of actions.

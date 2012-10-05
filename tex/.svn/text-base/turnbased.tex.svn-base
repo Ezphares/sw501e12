@@ -1,0 +1,15 @@
+\section{Turn-based game}\label{sec:turnbasedgames}
+A turn-based game is a game that is partitioned into well-defined parts, called turns. A player of the game is allowed a period of time to analyse and think before committing to game action, ensuring a separation between the action and the thinking process. This analysis time can sometimes be restricted by time. Once each player has performed his action the turn is over. Examples of turn-based games are: Tic-tac-toe, Pokémon, Rock-paper-scissors, Chess, and card games.
+
+In Tic-tac-toe each player make their decision and execute their turn in sequence. In this particularly game a player chooses where to put one of their X's / O's, puts it down, and the turn goes to the other player. The player who places three tiles in a horizontal, vertical, or diagonal row wins the game. If this has not happened and all slots on the board is occupied the game restarts.
+
+A little more advanced example of a turn-based game is a Pokémon battle. Each Pokémon has six attributes: Hitpoint, attack, defence, special attack, special defence, and speed. Each turn you and your opponent selects an action to do. You are allowed one action per turn. There are three different actions: Attack, use an item, or switch Pokémon. When using an attack it is the speed attribute that decides which Pokémon that will attack first. The damage the Pokémon deals depends on two attributes, your attack attribute and your opponent's defence attribute. Using an item and switching your Pokémon takes priority over using an attack. You are able to heal, boost, or switch your Pokémon before an opponent attacks. When a Pokémon's hitpoint hits zero the Pokémon faints and you have to switch in a new one, unless that was the last one in which case you lose the battle.\citep{pokemonbattle}
+
+Chess is also a turn-based game where each opponent in turns move one of their game pieces until one has the King in Checkmate.
+
+There are two forms/categories of turn-based games, one being called \textit{sequential games} and the other  \textit{simultaneously-executed games}.
+\begin{description}
+\item[Sequential games] is when each player take their turn in a sequence\citep{sequentialgame}. A simple example of a sequential game is Tic-tac-toe, because as explained before, one player places their tile and then the other person places their tile, so the game is a sequence of moves. Chess is another example of a sequential game because each player has to move a game piece before their turn ends and it is the other player's turn.
+
+\item[Simultaneously-executed] is a category of turn-based games where the player's turns are taken simultaneously. The turns are separated into two distinct phases: decision and execution. During the decision phase each player determines their actions, the decision phase occurs for everyone at the same time. In the execution phase all the player's actions are put into motion\citep{simnultaneousgame}. An example of this is Rock-paper-scissors.
+\end{description}
