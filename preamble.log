@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.15)  9 OCT 2012 16:55
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.11.15)  9 OCT 2012 16:51
 entering extended mode
-**master.tex
-(C:\Users\Dizzy\Documents\GitHub\sw501e12\master.tex
+**preamble.tex
+(C:\Users\Dizzy\Documents\GitHub\sw501e12\preamble.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -13,7 +13,6 @@ an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese,
 romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
 sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
 senglishmax, welsh, loaded.
-(C:\Users\Dizzy\Documents\GitHub\sw501e12\preamble.tex
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\report.cls"
 Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\size10.clo"
@@ -561,31 +560,10 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.156 \if@todonotes@enabled
-                           
+l.156 \if@todonotes@disabled
+                            
 The option `enable' was not declared in package `todonotes', perhaps you
 misspelled its name. Try typing  <return>  to proceed.
-
-! Undefined control sequence.
-<recently read> \if@todonotes@enabled 
-                                      
-l.156 \if@todonotes@enabled
-                           
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Extra \else.
-l.157 \else
-           
-I'm ignoring this; it doesn't match any \if.
-
-! Extra \fi.
-l.164 \fi
-         
-I'm ignoring this; it doesn't match any \if.
 
 ) (C:\Users\Dizzy\AppData\Roaming\MiKTeX\2.9\tex\latex\rotating\rotating.sty
 Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
@@ -781,119 +759,18 @@ Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@ppsavesec=\count168
 \c@@ppsaveapp=\count169
 ))
-(C:\Users\Dizzy\Documents\GitHub\sw501e12\master.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: subfig package v1.3 is loaded.
-Package caption Info: hyperref package is loaded.
-Package caption Info: listings package is loaded.
-Package caption Info: longtable package is loaded.
+! Emergency stop.
+<*> preamble.tex
+                
+*** (job aborted, no legal \end found)
 
-(C:\Users\Dizzy\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\ltcaption.sty
-Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
-)
-Package caption Info: rotating package is loaded.
-Package caption Info: End \AtBeginDocument code.
-
-(C:\Users\Dizzy\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count170
-\scratchdimen=\dimen176
-\scratchbox=\box47
-\nofMPsegments=\count171
-\nofMParguments=\count172
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count173
-\MPscratchDim=\dimen177
-\MPnumerator=\count174
-\makeMPintoPDFobject=\count175
-\everyMPtoPDFconversion=\toks41
-) ABD: EveryShipout initializing macros
-\c@lstlisting=\count176
-\AtBeginShipoutBox=\box48
-Package hyperref Info: Link coloring OFF on input line 3.
-LaTeX Info: Redefining \ref on input line 3.
-LaTeX Info: Redefining \pageref on input line 3.
-LaTeX Info: Redefining \nameref on input line 3.
-
-(C:\Users\Dizzy\Documents\GitHub\sw501e12\tex/trajectory_analysis.tex
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 6.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 6.
-LaTeX Font Info:    Try loading font information for U+msa on input line 6.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
-File: umsa.fd 2009/06/22 v3.00 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 6.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
-File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 9.
- [1
-
-
-{C:/Users/Dizzy/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-
-! LaTeX Error: There's no line here to end.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.44 \begin{math}
-                 \theta = \frac{1}{2}*\arcsin(\frac{g*d}{v^2})\end{math}
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-[2])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 19.
- [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 19.
- (C:\Users\Dizzy\Documents\GitHub\sw501e12\master.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 19.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 19.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 18463 strings out of 494045
- 321843 string characters out of 3145968
- 403041 words of memory out of 3000000
- 21398 multiletter control sequences out of 15000+200000
- 7155 words of font info for 28 fonts, out of 3000000 for 9000
+ 17737 strings out of 494045
+ 310774 string characters out of 3145968
+ 385358 words of memory out of 3000000
+ 20730 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 65i,12n,74p,1495b,877s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
-Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on master.pdf (3 pages, 111072 bytes).
-PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
- 17 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 63i,0n,57p,428b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+!  ==> Fatal error occurred, no output PDF file produced!
