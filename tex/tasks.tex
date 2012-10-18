@@ -1,5 +1,5 @@
 \subsection*{Tasks}
-	In this section we will explain all the tasks and how they will be managed. They appear here in the order they will be executed. The tasks will be executed by using an event driven scheduling instead of rate monotonic scheduling. The reason for this is because we at some point might need to go one task back. And that is not possible when using rate monotonic scheduling.
+	In this section we will explain all the tasks and how they will be managed. They appear here in the order they will be executed. The tasks will be executed by using an event driven scheduling instead of rate monotonic scheduling. The reason for this is because we at some point might need to go one task back. And that is not possible when using rate monotonic scheduling. Rate monotonic scheduling also focuses on when to execute the different tasks, by using alarms/timers, which is not what we want, since everything in our system will be happening spontaneously.
 
 \subsubsection{Reset position}
 	This task will make sure to reset the missile launcher into a start position. Because whenever the missile turret starts relocating the missile launcher it assumes that it is in a predefined position, which in our case will be the start position. 
