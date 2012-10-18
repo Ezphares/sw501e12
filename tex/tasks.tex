@@ -1,0 +1,21 @@
+\subsection*{Tasks}
+	In this section we will explain all the tasks and how they will be managed. They appear here in the order they will be executed. The tasks will be executed by using an event driven scheduling instead of rate monotonic scheduling. The reason for this is because we at some point might need to go one task back. And that is not possible when using rate monotonic scheduling.
+
+\subsubsection{Reset position}
+	This task will make sure to reset the missile launcher into a start position. Because whenever the missile turret starts relocating the missile launcher it assumes that it is in a predefined position, which in our case will be the start position. 
+	The way it will reset is by moving the horizontal axis in a specific direction until it reaches a touch sensor, thus the missile launcher has been reset on the horizontal axis. The same principles will be applied to the vertical axis. All this will be done by managed by the NXT-brick by using two touch-sensors and two rotors.
+	
+\subsubsection{Identify a moving object and its coordinates}
+	This task will identify moving objects and its coordinates and send them to the NXT-brick, to be used when predicting the missile trajectory.
+	The coordinates of the target will be 3 dimensional, where the Kinect will estimate a length to the target and the position of the target in 2-dimensions. It will do this twice with a delay between the two recordings. Because these coordinates will be used when calculating the 3 coordinate, which will be where the missile will collide with the target.
+	This will be done using the Kinect and a PC, which will be responsible for managing the Kinect and sending the data to the NXT-brick.
+	
+\subsubsection{Predict trajectory}
+	The NXT-brick will use the coordinates it got from the PC to check whether the target is within the range of the missile launcher, using the formula explained in \ref{?}. If the target is out of range, it will then go back to the previous task, which will be identifying a moving object and its coordinates. If it is within range, the NXT-brick will then proceed with the calculating the coordinates for where the missile and the target will collide, using the formula explained in\ref{?}.
+	
+\subsubsection{Move missile launcher}
+	When the third coordinate has been calculated, the NXT-brick then proceeds with adjusting the horizontal-axis and vertical-axis, so that the missile will be hitting the third coordinate.
+	This will be managed by the NXT-brick and two rotors.
+	
+\subsubsection{Fire and Reset}
+	After the missile launcher has been moved to the correct position. The missile will then be fired. This will be managed by the NXT-brick and a rotor. After it have fired it will start repeating all the tasks explained above.
