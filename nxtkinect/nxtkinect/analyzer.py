@@ -8,6 +8,7 @@ import cv2.cv as cv
 import freenect
 import math
 from nxtkinect.objects import CompositeData, DetectedObject
+from nxtkinect.usbcom import Usbcom
 from datetime import datetime
 
 class Analyzer(object):
@@ -24,6 +25,7 @@ class Analyzer(object):
         self.frames_captured = 0
         self.objects = []
         self.start = None
+        self.usb = Usbcom()
         
         cv2.namedWindow(self.window)
         
