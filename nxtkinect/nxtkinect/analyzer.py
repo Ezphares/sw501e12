@@ -90,7 +90,7 @@ class Analyzer(object):
             
             circles = cv2.HoughCircles(gray, cv.CV_HOUGH_GRADIENT, 2, 100)
             if circles == None:
-                continue
+                circles = [[]]
             
             for circle in circles[0]:
                 x, y = circle[0], circle[1]
