@@ -26,6 +26,7 @@ class Analyzer(object):
         self.objects = []
         self.start = None
         self.usb = Usbcom()
+	self.nxtwaiting = True
         
         cv2.namedWindow(self.window)
         
@@ -71,9 +72,11 @@ class Analyzer(object):
     def report_object(self):
         for o in self.objects:
             if o.is_suitable():
-                pass
-                print o.encode()
-                # TODO: Send to nxt
+                if self.nxtwaiting:
+		    self.nxtwaiting = False
+                    data = o.encode()
+                    self.usb.send_data(data[0], data[1], data[2], data[3], data[4], data[5])
+                
                 self.objects.remove(o)
     
     def detect_objects(self):
