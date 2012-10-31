@@ -24,10 +24,15 @@ class Usbcom:
     NXTin = None
 
     def convert(self, number):
-        if(number >= 65536):
-            return [0, 0]
+        if number < 0:
+            sign = 1
+            number = -number
         else:
-            return [int(number / 256), int(number % 256)]
+            sign = 0
+        if(number >= 65536):
+            return [0, 0, 0]
+        else:
+            return [sign, int(number / 256), int(number % 256)]
             
 
     def send_data(self, pos_x, pos_y, pos_z, speed_x, speed_y, speed_z):
@@ -39,6 +44,7 @@ class Usbcom:
         data.extend(self.convert(speed_y))
         data.extend(self.convert(speed_z))
         data = array.array('i', data)
+        print data
 
         self.handle.bulkWrite(self.NXTout.address, data)
 
