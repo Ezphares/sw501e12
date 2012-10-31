@@ -41,6 +41,9 @@ class Usbcom:
         data = array.array('i', data)
 
         self.handle.bulkWrite(self.NXTout.address, data)
+
+        data = self.handle.bulkRead(self.NXTin.address, 4)
+
         if data[0] == self.ACK_STRING and data[1:3].tostring() == "ok":
             data = array.array('c', list(chr(self.DISCONNECT_REQ)))
             self.handle.bulkWrite(self.NXTout.address, data)
@@ -50,7 +53,6 @@ class Usbcom:
         
 
     def __init__(self):
-        print 'Looking for NXT block'
 
         for bus in usb.busses():
 
