@@ -4,4 +4,7 @@
 *.blg
 master.synctex.gz
 *.pdf
+*.lol
+*.lot
+*.lof
 
