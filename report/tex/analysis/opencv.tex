@@ -1,0 +1,33 @@
+\section{OpenCV}
+
+\ac{opencv}\cite{opencv} is a cross-platform library for analyzing image and video data, including features such
+as object identification, motion tracking, facial recognition and several other items related to \ac{hci}. 
+Some of these could prove useful to the project, if target tracking for the turret is done with a camera.
+
+\ac{opencv} is originally a C library, but newer versions are written in C++. A first party Python wrapper is
+available, and several third parties have created wrappers for other languages, including JAVA\cite{javacv}, so
+using \ac{opencv} will place few restrictions on the project, with regard to the language used to implement
+target tracking.
+
+\subsection{Target Tracking}
+\ac{opencv} provides several ways of tracking a potential target.
+\begin{itemize}
+  \item{Colour Detection}\\
+  \ac{opencv} enables the user to provide a colour and a threshold, and then search the image for blobs of the
+  given colour and find the center of the given blob.
+  \item{Shape Detection}\\
+  Using \ac{opencv} it is also possible to detect specific shapes, such as circles and rectangles using
+  Hough Transforms\cite{hough2003}.
+  \item{Advanced Object Recognition}\\
+  It is also possible using \ac{opencv} to use machine learning with image samples to recognize a specific
+  object, using Haar-like features\cite{lienhart2002} which makes it possible to track virtually any object,
+  should the other methods prove insufficient.
+\end{itemize}
+
+\subsection{Pros and Cons}
+\ac{opencv} is available on a wide variety of platforms and can be used with a lot of programming languages,
+so using the library will add few limitations to the implementation in that regard. Also, with several ways
+of detecting objects, it gives a lot of room for choosing targets.\\
+However, some of the image processing algorithms are quite complex, and using image analysis will of course
+require the use of a camera, which might not be possible or feasible on the NXT, so it might require the
+use of an additional computer for image processing between the camera and the NXT.
