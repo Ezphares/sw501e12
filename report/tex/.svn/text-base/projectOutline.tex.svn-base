@@ -1,4 +1,0 @@
-\section*{Outline of the project}
-The report is split into two parts. The first part is about our language KAPAOOW, and the second part is about how the interpreter for the language is implemented.
-
-Chapter \ref{chap:lantheory} presents the theory that is used to describe a programming language. Chapter \ref{chap:kapaoow} uses the theory from the previous chapter to describe our language. Chapter \ref{chap:inttheory} presents the theory that is used to create an interpreter and the different phases an interpreter must undergo. Chapter \ref{chap:implementation} uses the theory from the previous chapter and presents how we have implemented our interpreter. Chapter \ref{chap:conclusion} presents the conclusion, reflection and future work regarding the achievements and challenges in this project, as well as a reflection of the project and improvements for KAPAOOW.

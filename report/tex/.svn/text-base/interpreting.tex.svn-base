@@ -1,9 +1,0 @@
-An interpreter is a program that translates the source code written in the given programming language to a target representation that can be immediately executed and evaluated.
-We have chosen to make an interpreter instead of a compiler, since we did not want to create a program that creates games but instead just executes games. The main difference of an interpreter and a compiler is that a compiler has to precompile all the instructions, where an interpreter can simply reload all the instructions over and over again, which results in a slower runtime, but the source code does not have to be recompiled when changes are made.
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\linewidth]{img/InterpretationDiagram.png}
-\caption{Interpretation model}
-\label{fig:intermodel}
-\end{figure}
-Figure \ref{fig:intermodel} illustrates the stages the interpreter goes through. The first stage is the lexical analysis which separate the instructions of the source code to tokens in a tokenstream. The tokenstream is then used to create an abstract syntax tree using the syntactical analysis. The semantic analysis stage performs scope checking and sets up a variable environment. The last stage is the execution, where the abstract syntax tree is executed using the variable environment.\citep{plpjava}

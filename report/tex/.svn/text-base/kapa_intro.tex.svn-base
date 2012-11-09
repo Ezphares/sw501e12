@@ -1,9 +1,0 @@
-In Section \ref{sec:criteria} we defined the criteria of KAPAOOW, with those in mind we designed our language for sequential turn-based games with a focus on readability and learnability. 
-
-
-Every game is defined by its rules and because of this, a ruleset is mandatory in order to play a game. A game can have two participants playing each other. Each of these participants can either be a human player or controlled by an AI script. An AI script is created separate of the ruleset. Our language KAPAOOW is able to describe both rulesets and AI scripts.
-
-
-In the code each participant is referenced as \textit{player} or \textit{enemy}. Where \textit{player} references to the participant that is currently playing, and \textit{enemy} references to the other participant. Because of this, these references changes each turn in a game. For some game examples and explanation of these look in Appendix \ref{app:codeexamples}.
-
-The following chapter explains the structure of KAPAOOW and gives a thorough explanation of our syntax. We also explain parts of our semantics using structural operational semantics.
