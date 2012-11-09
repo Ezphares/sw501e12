@@ -1,6 +1,8 @@
 % Define document class. Important.
 \documentclass[a4paper,twoside,openright]{report}
 
+\usepackage{acronym}
+
 % Margener
 %\setlength{\evensidemargin}{1cm}
 %\setlength{\oddsidemargin}{1cm}
@@ -51,16 +53,6 @@
 
 % Special symbols availability.
 \usepackage{amssymb}
-
-% Operationel semantik
-\newcommand{\lag}{\langle}
-\newcommand{\rag}{\rangle}
-\newcommand{\setof}[2]{\ensuremath{\{ #1 \mid #2 \}}}
-\newcommand{\set}[1]{\ensuremath{\{ #1 \}}}
-\newcommand{\besk}[1]{\ensuremath{\lag #1 \rag}}
-\newcommand{\ra}{\rightarrow}
-\newcommand{\lra}{\longrightarrow}
-\newcommand{\Ra}{\Rightarrow}
 
 % CODE %
 \usepackage{listings}
