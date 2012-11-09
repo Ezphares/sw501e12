@@ -75,6 +75,7 @@ class Analyzer(object):
                 if self.nxtwaiting:
 		    self.nxtwaiting = False
                     data = o.encode()
+                    print data
                     self.usb.send_data(data[0], data[1], data[2], data[3], data[4], data[5])
                 
                 self.objects.remove(o)
