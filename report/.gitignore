@@ -7,4 +7,5 @@ master.synctex.gz
 *.lol
 *.lot
 *.lof
-
+*.dvi
+*.out.ps
