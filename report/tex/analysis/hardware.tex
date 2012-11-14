@@ -2,10 +2,10 @@
 This section will describe and compare hardware that can be used to satisfy the conditions of the project. The section will further more define the final hardware used in the rest of the project.
 
 \subsection{Specifications for NXT}
-The LEGO Mindstorms NXT programmable robotics kit consists of various sensors, and a small computer which we shall hence forth call the NXT. The NXT consists of an ARM7 32-bit processor, 256kb of flash memory, 64kb of RAM and an 8-bit AVR microcontroller. The ARM CPU is used for general computations, and the AVR microcontroller is used to control the sensors and servo motors that can be connected to the NXT. The NXT also has a small LCD screen, Bluetooth support, a speaker, and can be connected to a computer through USB. It can take input from four sensors and control three motors at a time.
+The LEGO Mindstorms NXT programmable robotics kit consists of various sensors, and a small computer which we shall hence forth call the NXT. The NXT consists of an ARM7 32-bit processor, 256kb of flash memory, 64kb of RAM and an 8-bit AVR microcontroller \cite{nxtspec}. The ARM CPU is used for general computations, and the AVR microcontroller is used to control the sensors and servo motors that can be connected to the NXT. The NXT also has a small LCD screen, Bluetooth support, a speaker, and can be connected to a computer through USB. It can take input from four sensors and control three motors at a time.
 
 \subsubsection{ARM CPU}
-The ARM family of chipsets are designed using the reduced instruction set computing (RISC) principles. RISC processors generally use a small but optimized instruction set, and use the load/store architecture, which only allows memory to be accessed by load and store operations. ARM7 processors have a three stage pipeline. ARM processors differ from the regular x86 processors used in most personal computers in many ways. The shorter pipeline and smaller instruction set makes ARM processors much easier to predict, because of this it is also possible to optimize software for ARM processors much better than for x86 processors.
+The ARM family of chipsets are designed using the reduced instruction set computing (RISC) principles \cite{armarchitecture}. RISC processors generally use a small but optimized instruction set, and use the load/store architecture, which only allows memory to be accessed by load and store operations. ARM7 processors have a three stage pipeline. ARM processors differ from the regular x86 processors used in most personal computers in many ways. The shorter pipeline and smaller instruction set makes ARM processors much easier to predict, because of this it is also possible to optimize software for ARM processors much better than for x86 processors.
 
 ARM processors are usually used in embedded systems such as cell phones, TVs, and most other consumer electronics. The reason for the ARM processors widespread use, is a relatively high performance at a low power consumption and a low price.
 
@@ -15,7 +15,7 @@ In the NXT kit are servo motors that can be controlled by the NXT, these motors 
 An ultrasonic sensor is also included, this sensor can measure distance to an object, and detect movement. This is done by sending out ultrasonic sound waves that bounce off objects and are sent back. By measuring the time it takes for the sound waves to come back, the sensor can calculate the distance to the object. The object has to have a flat surface for the ultrasonic sensor to detect it.
 
 \subsection{Specifications for Kinect}
-An alternative to the ultrasound sensor is the Kinect from Microsoft. The Kinect is developed for the Xbox 360 to facilitate input without a typical controller. Instead the input is body movement from a person standing in front of the Kinect. The Kinect registers body movement by using three cameras, two regular RGB cameras that create a 3D image, and an infrared camera that uses a laser grid to measure depth. All three cameras have a 640x480 resolution and a 30 Hz refresh rate.
+An alternative to the ultrasound sensor is the Kinect from Microsoft. The Kinect is developed for the Xbox 360 to facilitate input without a typical controller. Instead the input is body movement from a person standing in front of the Kinect. The Kinect registers body movement by using a camera and an Infrared (IR) Depth Sensor \cite{kinectspec}. The regular RGB camera creates color images with a 1280x960 pixel resolution. The IR Depth Sensor works in combination with an IR Emitter that emits infrared light beams. The IR Depth Sensor reads these beams as they are reflected back from an object, measuring the distance between the object and the sensor. Both the RGB camera and the IR Depth Sensor has a 30 Hz refresh rate.
 
 Even though the Kinect was designed to be used by the Xbox 360, a SDK for Windows have been released. The Kinect is thus capable of much more than finding people and their movements.
 
@@ -44,7 +44,7 @@ When testing the Kinect and ultrasound sensor precision, we measured the distanc
 
 The tests show that while the ultrasound sensor is a bit unprecise between 50 and 80 cm, the Kinect cannot measure closer than 80 cm, thus giving the ultrasound sensor an advantage.
 On the other side of the spectrum, however, the ultrasound sensor cannot measure above 160 cm, while the Kinect can measure precisely at least up to our maximum distance measured of 200 cm.
-Generally, the precision of both the ultrasound sensor and the Kinect is precise down to \textpm{} 1 cm between 80 and 160 cm. The Kinect retains this precision up to at least 200 cm.
+Generally, the precision of both the ultrasound sensor and the Kinect is precise down to \textpm1 cm between 80 and 160 cm. The Kinect retains this precision up to at least 200 cm.
 
 \subsection{Cannon shot distance}
 The cannon's shot distance has been measured by repeatedly shooting the cannon from specific angles, and calculating the average distance of the shot from a specific angle. \autoref{fig:shot-distance} shows the average shot distances from the measured angles.
