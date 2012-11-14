@@ -6,7 +6,7 @@ The variables in this section are as follows:
 \item \begin{math}v\end{math} is speed denoted in m/s
 \item \begin{math}\theta\end{math} is the angle of the turret adjacent to the ground
 \item \begin{math}g\end{math} is the g-force, which is ''1", since we will assume that we are at sealevel
-\item \begin{math}f\end{math} is the number of meters the missile launcher is off the floor \todo{Jeg valgte med vilje at bruge floor istedet for ground, for at give læseren et indtryk af at f står for floor. Da g allerede var optaget.}
+\item \begin{math}f\end{math} is the number of meters the missile launcher is off the floor \todo{Jeg valgte med vilje at bruge floor istedet for ground, for at give lÃ¦seren et indtryk af at f stÃ¥r for floor. Da g allerede var optaget.}
 \item \begin{math}t\end{math} is time until impact
 \item \begin{math}d\end{math} is the distance the projectile can or will travel.
 \end{itemize}
@@ -36,7 +36,7 @@ This formula will figure out the height of the projectile, when it is at distanc
 
 \subsection*{Getting the coordinates}
 Using coordinates we get from the Xbox 360 Kinect, we can get 6 coordinates, the first 3 would be \begin{math}C0=(x0, y0, z0)\end{math}. And the next three coordinates we would receive within a fixed time schedule, for the sake of the example at the end, let's just say that the timelapse between the coordinates will be 1 second. So the next three coordinates, \begin{math}C1=(x1, y1, z1)\end{math}. And by using these two sets of coordinates we can create a third set, \begin{math}C2=(x2, y2, z2)\end{math}. Now lets say \begin{math}(C0=15, 6, 0)\end{math} and \begin{math}(C1=30, 6, 5)\end{math}. We can then assume that it one second later be in \begin{math}C2=(x2=x1+(x1-x0), y2=y1+(y1-y0), z3=z1+(z1-z0))\end{math}, which would be \begin{math}C2=(45, 6, 5)\end{math}. This should be a fast way of calculating where the target is going to be. And would take out the guesswork from the formula mentioned above.
-\todo{Denne section skal nok flyttes op, og så skal de 2 sektioner skrives om}
+\todo{Denne section skal nok flyttes op, og sÃ¥ skal de 2 sektioner skrives om}
 
 \subsection*{Within range}
 Another way to determine whether a projectile is within range is to use the angle formula:
