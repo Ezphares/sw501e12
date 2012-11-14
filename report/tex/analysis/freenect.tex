@@ -1,18 +1,20 @@
-\section{Libfreenect}
+\section{Freenect}
 
 Libfreenect\cite{libfreenect} is an open source library for the Kinect and an alternative to the SDK released
 by Microsoft. Freenect comes with its own driver for the Kinect sensor, and is available for Windows, Linux
-and OS X, making it more flexible than the Microsoft SDK, which depends on the .NET-framework\cite{kinectwindows},
+and OS X, making it more flexible than the Microsoft SDK, which depends on the
+.NET-framework\cite{kinectwindows},
 limiting its implementation to the Windows platform.
 
 Freenect is a C library, with wrappers in several languages, including C++, C\#, python, matlab, etc.
 imposing virtually no limits to the language of implementation. This adds additional flexibility over
 the Microsoft SDK, which is only available for C++, C\# and VisualBasic.
 
-And while freenect is a work in progress, the functionality for the depth and RGB sensers are fully implemented,
-so anything needed for object detection will be possible, should freenect be used.
+And while freenect is a work in progress, the functionality for the depth and RGB sensors are fully implemented.
+What it gives access to specifically, is two interfaces for receiving depth and RGB data. One is synchronous, 
+where the program blocks while waiting for the next set of data from one of the sensors. The other is an 
+asynchronous interface, providing callbacks when each sensor is ready, which allows other code to be executed
+while waiting, for example to analyze previous images.
 
 However, being a work in progress, open source library, the documentation is quite scarce compared to
 that of the official API, meaning any problems during implementation could be harder to solve with freenect.
-
-%TODO Lidt om hvordan man bruger det.
