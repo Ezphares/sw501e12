@@ -1,5 +1,5 @@
 \section{Hardware}
-This section will describe and compare hardware that can be used to satisfy the conditions of the project. The section will further more define the final hardware used in the rest of the project.
+This section will describe and compare hardware that can be used to satisfy the conditions of the project.
 
 \subsection{Specifications for NXT}
 The LEGO Mindstorms NXT programmable robotics kit consists of various sensors, and a small computer which we shall hence forth call the NXT. The NXT consists of an ARM7 32-bit processor, 256kb of flash memory, 64kb of RAM and an 8-bit AVR microcontroller \cite{nxtspec}. The ARM CPU is used for general computations, and the AVR microcontroller is used to control the sensors and servo motors that can be connected to the NXT. The NXT also has a small LCD screen, Bluetooth support, a speaker, and can be connected to a computer through USB. It can take input from four sensors and control three motors at a time.
@@ -46,22 +46,22 @@ The tests show that while the ultrasound sensor is a bit unprecise between 50 an
 On the other side of the spectrum, however, the ultrasound sensor cannot measure above 160 cm, while the Kinect can measure precisely at least up to our maximum distance measured of 200 cm.
 Generally, the precision of both the ultrasound sensor and the Kinect is precise down to \textpm1 cm between 80 and 160 cm. The Kinect retains this precision up to at least 200 cm.
 
-\subsection{Cannon shot distance}
-The cannon's shot distance has been measured by repeatedly shooting the cannon from specific angles, and calculating the average distance of the shot from a specific angle. \autoref{fig:shot-distance} shows the average shot distances from the measured angles.
+\subsection{Range of cannon}
+The cannon's range has been measured by repeatedly shooting the cannon from specific angles, and calculating the average travel distance of the projectile from a specific angle. \autoref{fig:cannon-range} shows the average ranges from the measured angles.
 
 These tests have been performed with the cannon at 80 cm above the ground.
 
 \begin{figure}[hbtp]
-\includegraphics[width=\textwidth]{img/cannon-shot-distance.png}
-\caption{Cannon shot distance measurement.} 
-\label{fig:shot-distance} 
+\includegraphics[width=\textwidth]{img/cannon-range.png}
+\caption{The range of the cannon.} 
+\label{fig:cannon-range} 
 \end{figure}
 
-We can gather from \autoref{fig:shot-distance} that the cannon shoots furthest at a 25 degree angle, where it shot a distance of 230 cm, and that shooting from 0 degrees gives the same result of 160 cm as shooting from 65 degrees. The results of the shots vary with a few centimeters in each direction from the average.
+We can gather from \autoref{fig:cannon-range} that the cannon shoots furthest at a 25 degree angle, where it shot the projectile a distance of 230 cm, and that shooting from 0 degrees gives the same result of 160 cm as shooting from 65 degrees. The results of the shots vary with a few centimeters in each direction from the average.
 
-\subsection{Choice of hardware}
-As we have easy access to the NXT, the use of it seems like the obvious choice. This means that the tower will also be built of LEGO, as the servo motors are built for this.
+%\subsection{Choice of hardware}
+%As we have easy access to the NXT, the use of it seems like the obvious choice. This means that the tower will also be built of LEGO, as the servo motors are built for this.
 
-The Competition Cannon has the ability to shoot in a range where both of our tested sensors can measure distance. The cannon is also precise enough that it should be possible to hit a moving target with it.
+%The Competition Cannon has the ability to shoot in a range where both of our tested sensors can measure distance. The cannon is also precise enough that it should be possible to hit a moving target with it.
 
-Our central hardware choice is whether to use the supplied LEGO ultrasound sensor or the Kinect to measure distance. While the ultrasound sensor has the advantage of being able to measure distance to an object between 50 and 80 cm, it lacks ability in the upper distance range. The ultrasound sensor itself, however, is not enough to replace the Kinect. The ultrasound sensor can only measure distance to a single point, but to hit a moving object it is necessary to know both the speed and direction of an object as well as the distance to it. The Kinect does it all in one piece of hardware, for this reason, we will use the Kinect.
+%Our central hardware choice is whether to use the supplied LEGO ultrasound sensor or the Kinect to measure distance. While the ultrasound sensor has the advantage of being able to measure distance to an object between 50 and 80 cm, it lacks ability in the upper distance range. The ultrasound sensor itself, however, is not enough to replace the Kinect. The ultrasound sensor can only measure distance to a single point, but to hit a moving object it is necessary to know both the speed and direction of an object as well as the distance to it. The Kinect does it all in one piece of hardware, for this reason, we will use the Kinect.
