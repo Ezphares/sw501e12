@@ -83,16 +83,18 @@ TASK(TaskKinect)
 		}
 		else
 		{
+			x = convert((int)data[0], (int)data[1], (int)data[2]);
+			y = convert((int)data[3], (int)data[4], (int)data[5]);
 			
 			GetResource(Target_Rx);
-			target.pos_x = convert((int)data[0], (int)data[1], (int)data[2]);
-			target.pos_y = convert((int)data[3], (int)data[4], (int)data[5]);
+			target.pos_x = sin(target.pos_x / 320 * 28.5) * (target.pos_z / sin(90));
+			target.pos_y = sin(target.pos_y / 320 * 21.5) * (target_pos_z / sin(90));
 			target.pos_z = convert((int)data[6], (int)data[7], (int)data[8]);
 			target.speed_x = convert((int)data[9], (int)data[10], (int)data[11]);
 			target.speed_y = convert((int)data[12], (int)data[13], (int)data[14]);
 			target.speed_z = convert((int)data[15], (int)data[16], (int)data[17]);
 			ReleaseResource(Target_Rx);
-			
+						
 			SetEvent(TaskAim, EvTargetAcquired);
 			///send back the acknowledgment ok string
 			data[0] = ACK_STRING;
@@ -116,33 +118,40 @@ TASK(TaskAim)
 	WaitEvent(EvTargetAcquired);
 	
 	/* Horizontal aim */
-	//Target position
-	int target_x = 20;
-	int target_z = 3;
 
 	//Hardcoded position of tower
-	int center_x = 1;
+	int center_x = 0;
 	int center_z = 0;
-
-	int delta_x = target_x - center_x;
-	int delta_z = target_z - center_z;
+	
+	int delta_x = target.pos_x - center_x;
 
 	//Take the arctangens of delta_z/delta_x, and calculate degrees.
-	double radians = atan2(delta_z, delta_x);
+	double radians = atan2(taget.pos_z, delta_x);
 	double raw_degrees = radians * 180 / 3.1415926;
 	int rounded_degrees = ceil (raw_degrees);
 	
-	nxt_motor_set_speed(NXT_PORT_A, 100, 1);
-	while (nxt_motor_get_count(NXT_PORT_A) <= rounded_degrees*horizontal_relation);
-	nxt_motor_set_speed(NXT_PORT_A, 0, 1);
+	//set position
+	if (rounded_degrees >= 0)
+	{		
+		nxt_motor_set_speed(NXT_PORT_A, 100, 1);
+		nxt_motor_set_count(NXT_PORT_A, 0);
+		while (nxt_motor_get_count(NXT_PORT_A) <= (rounded_degrees * horizontal_relation);
+		nxt_motor_set_speed(NXT_PORT_A, 0, 1);
+	}
+	else
+	{
+		nxt_motor_set_speed(NXT_PORT_A, -100, 1);
+		nxt_motor_set_count(NXT_PORT_A, 0);
+		while (nxt_motor_get_count(NXT_PORT_A) >= -(rounded_degrees * horizontal_relation);
+		nxt_motor_set_speed(NXT_PORT_A, 0, 1);
+	}
+		
 
 	/* Vertical aim */
-	double z = 200;
-	double y = 80;
 	double g = -9.81;
 	double v = 41;
 	
-	double tan_angle_base = ( pow(v,2) - 2*g*(y + .5*g*( pow(z,2) / pow(v,2))));
+	double tan_angle_base = ( pow(v,2) - 2*g*(target.pos_y + .5*g*( pow(target.pos_z,2) / pow(v,2))));
 	double tan_angle_vpos = v + pow(tan_angle_base, .5);
 	double tan_angle_divpos = tan_angle_vpos / (g*z/v);
 	double degrees_pos = atan(tan_angle_divpos) * 180 / 3.1415926;
