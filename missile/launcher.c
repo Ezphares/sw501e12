@@ -71,6 +71,7 @@ TASK(TaskKinect)
 	unsigned short len;
 	U8 data[MAX_USB_DATA_LEN];
 	
+	ecrobot_process1ms_usb();
 	len = ecrobot_read_usb(data, 0, MAX_USB_DATA_LEN);
 	ReleaseResource(USB_Rx);
 	
