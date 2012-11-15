@@ -48,10 +48,12 @@ class Analyzer(object):
         self.lock.acquire()
         if type == self.last_frame[0] or self.last_frame[0] == 'none':
             self.last_frame = (t, (data, timestamp))
+            self.lock.release()
             return
         
         if timestamp - self.last_frame[1][1] > Analyzer.frame_threshold:
             self.last_frame = (t, (data, timestamp))
+            self.lock.release()
             return
         
         c = None
