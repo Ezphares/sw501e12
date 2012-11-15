@@ -53,8 +53,11 @@ TASK(TaskReset)
 	while (ecrobot_get_touch_sensor(NXT_PORT_S1) == 0);
 	nxt_motor_set_speed(NXT_PORT_A, 0, 1);
 	
-	nxt_motor_set_speed(NXT_PORT_B, 15, 1);
+	nxt_motor_set_speed(NXT_PORT_B, -15, 1);
 	while (ecrobot_get_touch_sensor(NXT_PORT_S2) == 0);
+	nxt_motor_set_count(NXT_PORT_B, 0);
+	nxt_motor_set_speed(NXT_PORT_B, 15, 1);
+	while (nxt_motor_get_count(NXT_PORT_B) <= 12);
 	nxt_motor_set_speed(NXT_PORT_B, 0, 1);
 	
 	SetEvent(TaskKinect, EvResetDone);
@@ -150,8 +153,8 @@ TASK(TaskAim)
 	double vertical = min(degrees_pos, degrees_neg);
 	
 	nxt_motor_set_count(NXT_PORT_B, 0);
-	nxt_motor_set_speed(NXT_PORT_B, -15, 1);
-	while (nxt_motor_get_count(NXT_PORT_B) >= -vertical);
+	nxt_motor_set_speed(NXT_PORT_B, 15, 1);
+	while (nxt_motor_get_count(NXT_PORT_B) >= vertical);
 	nxt_motor_set_speed(NXT_PORT_B, 0, 1);
 	
 	
