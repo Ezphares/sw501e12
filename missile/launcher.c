@@ -117,6 +117,7 @@ TASK(TaskAim)
 {
 	WaitEvent(EvTargetAcquired);
 	
+	nxt_motor_set_speed(NCT_PORT_C, 100, 1);
 	/* Horizontal aim */
 
 	//Hardcoded position of tower
