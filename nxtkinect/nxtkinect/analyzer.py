@@ -10,6 +10,7 @@ import math
 from nxtkinect.objects import CompositeData, DetectedObject
 from nxtkinect.usbcom import Usbcom
 from datetime import datetime
+from multiprocessing import Lock
 
 class Analyzer(object):
     frame_threshold = 10000000 / 3
@@ -26,7 +27,8 @@ class Analyzer(object):
         self.objects = []
         self.start = None
         self.usb = Usbcom()
-	self.nxtwaiting = True
+        self.nxtwaiting = True
+        self.lock = Lock()
         
         cv2.namedWindow(self.window)
         
@@ -43,6 +45,7 @@ class Analyzer(object):
         self.process_frame('depth', data, timestamp)
 
     def process_frame(self, t, data, timestamp):
+        self.lock.acquire()
         if type == self.last_frame[0] or self.last_frame[0] == 'none':
             self.last_frame = (t, (data, timestamp))
             return
@@ -60,6 +63,7 @@ class Analyzer(object):
         self.frames.append(c)
         self.frames_captured += 1
         self.last_frame = ('none', ())
+        self.lock.release()
 
     def body(self, *args):
         #self.timer()
