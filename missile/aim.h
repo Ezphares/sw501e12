@@ -1,9 +1,9 @@
 #ifndef AIM_H_
 #define AIM_H_
 
-int convert(int sign, int number1, int number2) 
+double convert(int sign, int number1, int number2) 
 {
-	int value = (number1 * 256) + number2;
+	double value = ((double)number1 * 256) + (double)number2;
 	if(sign==1)
 	{
 		return -value;
