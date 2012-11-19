@@ -3,8 +3,8 @@
 
 typedef struct Target
 {
-	int pos_x, pos_y, pos_z;
-	int speed_x, speed_y, speed_z;
+	double pos_x, pos_y, pos_z;
+	double speed_x, speed_y, speed_z;
 } Target;
 #endif
 

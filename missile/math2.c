@@ -9,6 +9,14 @@ double min (double a, double b)
 		return b;
 }
 
+double max(double a, double b)
+{
+	if (a >= b)
+		return a;
+	else 
+		return b;
+}
+
 double radtodeg(double a)
 {
 	return a / PI * 180;
