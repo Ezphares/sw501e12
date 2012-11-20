@@ -1,6 +1,7 @@
 '''
 
 '''
+from nxtkinect.coordinate import Vector3
 
 class DetectedObject(object):
     offset_x = -320
@@ -9,54 +10,37 @@ class DetectedObject(object):
     
     def __init__(self, start):
         self.coordinates = []
-        self.distances = []
         self.age = 0
         self.start = start
         self.end = 0
         
     def get_motion(self):
-        if len(self.coordinates) != len(self.distances):
-            raise 'Error: coordinate and distance mismatch.'
-        
-        motion_set = [(self.coordinates[i][0] - self.coordinates[i-1][0],
-                       self.coordinates[i][1] - self.coordinates[i-1][1],
-                       self.distances[i] - self.distances[i-1])
+        motion_set = [self.coordinates[i] - self.coordinates[i-1]
                       for i in range(1, len(self.coordinates))]
         
-        x, y, z = 0, 0, 0
-        for i in range(0, len(motion_set)):
-            x += motion_set[i][0]
-            y += motion_set[i][1]
-            z += motion_set[i][2]
+        motion = Vector3()
+        for m in motion_set:
+            motion += m
         
-        x /= len(motion_set)
-        y /= len(motion_set)
-        z /= len(motion_set)
+        motion /= len(motion_set)
         
         dt = self.end - self.start
         s = dt.total_seconds()
         
-        x /= s
-        y /= s
-        z /= s        
+        motion /= s        
         
-        return (x,y,z)
+        return motion
     
     def get_position(self):
-        return (self.coordinates[-1][0], self.coordinates[-1][1], self.distances[-1])
+        return self.coordinates[-1]
     
     def encode(self):
         pos = self.get_position()
         mov = self.get_motion()
-        return [int(pos[0] + DetectedObject.offset_x),
-                int(pos[1] + DetectedObject.offset_y),
-                int(pos[2] + DetectedObject.offset_z),
-                int(mov[0]), int(mov[1]), int(mov[2])]
+        return [pos.x, pos.y, pos.z,
+                mov.x, mov.y, mov.z]
     
-    def is_suitable(self):
-        if len(self.coordinates) != len(self.distances):
-            raise 'Error: coordinate and distance mismatch.'
-        
+    def is_suitable(self):      
         return len(self.coordinates) >= 3
     
     
