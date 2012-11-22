@@ -5,8 +5,10 @@
 #include "aim.h"
 #include "math2.h"
 #include <math.h>
+#include <stdlib.h>
 
 DeclareAlarm(AlarmKinect);
+DeclareAlarm(AlarmFire);
 DeclareCounter(CntSystem);
 DeclareResource(USB_Rx);
 DeclareResource(Target_Rx);
@@ -25,6 +27,8 @@ const static unsigned char DISCONNECT_REQ = 0xFF;
 const static unsigned char COMM_STRING = 0x01;
 const static unsigned char ACK_STRING = 0x02;
 const static double horizontal_relation = 0.053571428571486;
+const static double v = 410.0f;
+const static double cannon_delay = 0.0f;
 
 // nxtOSEK hook to be invoked from an ISR in category 2
 void user_1ms_isr_type2(void)
@@ -87,15 +91,13 @@ TASK(TaskKinect)
 		else
 		{
 			GetResource(Target_Rx);
-			double x = convert((int)data[0], (int)data[1], (int)data[2]);
-			double y = convert((int)data[3], (int)data[4], (int)data[5]);
+			target.pos.x = convert((int)data[0], (int)data[1], (int)data[2]);
+			target.pos.y = convert((int)data[3], (int)data[4], (int)data[5]);
+			target.pos.z = convert((int)data[6], (int)data[7], (int)data[8]);
 			
-			target.pos_z = normalized_depth(convert((int)data[6], (int)data[7], (int)data[8]));
-			target.pos_x = sin(degtorad(x / 320.0f * 28.5f)) * (target.pos_z / sin(degtorad(90.0f))); 
-			target.pos_y = -(sin(degtorad(y / 240.0f * 21.5f) * (target.pos_z / sin(degtorad(90.0f)))) - 100);
-			target.speed_x = convert((int)data[9], (int)data[10], (int)data[11]);
-			target.speed_y = convert((int)data[12], (int)data[13], (int)data[14]);
-			target.speed_z = convert((int)data[15], (int)data[16], (int)data[17]);
+			target.speed.x = convert((int)data[9], (int)data[10], (int)data[11]);
+			target.speed.y = convert((int)data[12], (int)data[13], (int)data[14]);
+			target.speed.z = convert((int)data[15], (int)data[16], (int)data[17]);
 			ReleaseResource(Target_Rx);
 						
 			SetEvent(TaskAim, EvTargetAcquired);
@@ -104,7 +106,7 @@ TASK(TaskKinect)
 			data[1] = 'o';
 			data[2] = 'k';
 			data[3] = 0;
-
+						
 			GetResource(USB_Rx);
 			len = ecrobot_send_usb(data, 0, 4);
 			ReleaseResource(USB_Rx);		
@@ -121,19 +123,32 @@ TASK(TaskAim)
 	WaitEvent(EvTargetAcquired);
 	GetResource(Target_Rx);
 	/* Horizontal aim */
-
-	//Hardcoded position of tower
-	int center_x = 0;
+	double prediction = 2500;
+	Vector3 *t = predict_target(&target, prediction);
 	
-	int delta_x = target.pos_x - center_x;
+	double depth = length(t);
+	
+	prediction -= depth / v;
+	prediction -= cannon_delay;
+	
+	if (SetRelAlarm(AlarmFire, (int)prediction, 0) != E_OK)
+	{
+		display_string("ERR");
+		display_update();
+	}
 
+	
+	//Adjust for height difference of tower and kinect
+	t->y -= 100;
+	
+	//extended Pythagoras for 3D, gets depth in mm
+	
 	//Take the arctangens of delta_z/delta_x, and calculate degrees.
-	double radians = atan2(target.pos_z, target.pos_x);
-	double raw_degrees = radians * 180.0f / 3.1415926f - 90.0f;
-	int rounded_degrees = ceil (raw_degrees);
+	double radians = asin(t->x / depth);
+	double raw_degrees = -radtodeg(radians);
 	
 	//set position
-	if (rounded_degrees >= 0)
+	if (raw_degrees >= 0)
 	{		
 		nxt_motor_set_speed(NXT_PORT_A, 100, 1);
 		nxt_motor_set_count(NXT_PORT_A, 0);
@@ -150,15 +165,14 @@ TASK(TaskAim)
 	
 	/* Vertical aim */
 	double g = -98.1f;
-	double v = 410.0f;
 	
-	double tan_angle_base = ( pow(v, 2.0f) - 2.0f * g * (target.pos_y + .5f * g * (pow(target.pos_z, 2.0f) / pow(v, 2.0f))));
-	double tan_angle_vpos = v + pow(tan_angle_base, .5f);
-	double tan_angle_divpos = tan_angle_vpos / (g * target.pos_z / v);
+	double tan_angle_base = ((v * v) - 2.0f * g * (t->y + .5f * g * (depth * depth) / (v * v)));
+	double tan_angle_vpos = v + sqrt(tan_angle_base);
+	double tan_angle_divpos = tan_angle_vpos / (g * depth / v);
 	double degrees_pos = radtodeg(atan(tan_angle_divpos));
 	
-	double tan_angle_vneg = v - pow(tan_angle_base, .5f);
-	double tan_angle_divneg = tan_angle_vneg / (g * target.pos_z / v);
+	double tan_angle_vneg = v - sqrt(tan_angle_base);
+	double tan_angle_divneg = tan_angle_vneg / (g * depth / v);
 	double degrees_neg = radtodeg(atan(tan_angle_divneg));
 	
 	double vertical = max(degrees_pos, degrees_neg);
@@ -172,15 +186,13 @@ TASK(TaskAim)
 	while (nxt_motor_get_count(NXT_PORT_B) <= (int)-vertical);
 	nxt_motor_set_speed(NXT_PORT_B, 0, 1);
 	
-	SetEvent(TaskFire, EvAimDone);
+	free(t);
 	ReleaseResource(Target_Rx);
 	TerminateTask();
 }
 
 TASK(TaskFire)
 {
-	WaitEvent(EvAimDone);
-	
 	nxt_motor_set_speed(NXT_PORT_C, 100, 1);
 	nxt_motor_set_count(NXT_PORT_C, 0);
 	while(nxt_motor_get_count(NXT_PORT_C) < 360);
