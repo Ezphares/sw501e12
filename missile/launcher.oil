@@ -83,10 +83,7 @@ CPU ATMEL_AT91SAM7S256
 	
 	TASK TaskFire
 	{		
-		AUTOSTART = TRUE
-		{
-			APPMODE = appmode1;
-		};
+		AUTOSTART = FALSE;
 		PRIORITY = 4;
 		ACTIVATION = 1;
 		SCHEDULE = NON;
@@ -114,6 +111,17 @@ CPU ATMEL_AT91SAM7S256
 			CYCLETIME = 1;
 			APPMODE = appmode1;
 		};
+	};
+	
+	ALARM AlarmFire
+	{
+		COUNTER = CntSystem;
+		ACTION = ACTIVATETASK
+		{
+			TASK = TaskFire;
+		};
+		AUTOSTART = FALSE;
+		
 	};
 };
 
