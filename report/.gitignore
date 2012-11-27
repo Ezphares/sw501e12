@@ -3,7 +3,7 @@
 *.bbl
 *.blg
 master.synctex.gz
-*.pdf
+master.pdf
 *.lol
 *.lot
 *.lof
