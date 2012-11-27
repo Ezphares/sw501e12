@@ -9,6 +9,7 @@ import freenect
 import math
 from nxtkinect.objects import CompositeData, DetectedObject
 from nxtkinect.usbcom import Usbcom
+from nxtkinect.coordinate import Vector3, KinectData
 from datetime import datetime
 from multiprocessing import Lock
 
@@ -18,7 +19,7 @@ class Analyzer(object):
     tracking_max_distance = 45
     object_max_age = 0
     
-    def __init__(self):
+    def __init__(self, nousb = False):
         self.window = str(self)
         self.running  = True
         self.last_frame = ('none', ())
@@ -26,8 +27,10 @@ class Analyzer(object):
         self.frames_captured = 0
         self.objects = []
         self.start = None
-        self.usb = Usbcom()
+        self.nousb = nousb
         self.nxtwaiting = True
+        if not nousb:
+            self.usb = Usbcom()
         self.lock = Lock()
         
         cv2.namedWindow(self.window)
@@ -79,10 +82,11 @@ class Analyzer(object):
         for o in self.objects:
             if o.is_suitable():
                 if self.nxtwaiting:
-		    self.nxtwaiting = False
+                    self.nxtwaiting = False
                     data = o.encode()
                     print data
-                    self.usb.send_data(data[0], data[1], data[2], data[3], data[4], data[5])
+                    if not self.nousb:
+                        self.usb.send_data(*data)
                 
                 self.objects.remove(o)
     
@@ -107,13 +111,14 @@ class Analyzer(object):
             for circle in circles[0]:
                 x, y = circle[0], circle[1]
                 z = depth[y * 640 + x]
+                p = Vector3(from_kinect = KinectData(depth = z, h = x + DetectedObject.offset_x, v = y + DetectedObject.offset_y))
                 #print x, y, z
                 cv2.circle(frame.image, (int(x), int(y)), int(circle[2]), cv.CV_RGB(255, 0, 0), 2, 8, 0 )
                 
                 assigned = (None, Analyzer.tracking_max_distance)
                 for o in self.objects:
                     pos = o.get_position()
-                    dist = math.sqrt(math.pow(pos[0] - x, 2) + math.pow(pos[1] - y, 2))
+                    dist = len(pos - p)
                     if dist < assigned[1]:
                         assigned = (o,dist)
         
@@ -125,8 +130,7 @@ class Analyzer(object):
                 else:
                     o = assigned[0]    
                 
-                o.coordinates.append((x, y))
-                o.distances.append(z)
+                o.coordinates.append(p)
                 o.end = datetime.now()
                 o.age = 0
         
