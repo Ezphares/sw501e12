@@ -12,9 +12,16 @@ If the object is flying, or it in other ways are moving up or down, there is a w
 
 \subsection{Projectile Trajectory Analysis}
 When the targets position has been predicted, the projectile should be launched and hit the target. To know where to shoot the projectile at, the trajectory of the projectile must be calculated.
-The projectiles trajectory will be parabolic, thus the calculations needed will be to find the derivative of a quadratic equation.
+The projectiles trajectory will be parabolic\cite{trajectoryanalysis}, thus the calculations needed will be to find the derivative of a quadratic equation.
 
-To know when to launch the projectile, and at which angle, it is necessary to know the speed of the projectile, the distance to the predicted target, and the height difference between the cannon and the target. Once this is known, it is possible to calculate the trajectory that the projectile will have to travel to hit the target, and thus calculate the angle of launch.
+To know when to launch the projectile, and at which angle, it is necessary to know the speed of the projectile, the distance to the predicted target, and the height difference between the cannon and the target. Once this is known, it is possible to calculate the trajectory that the projectile will have to travel to hit the target, and thus calculate the angle of launch. \autoref{fig:projectile-trajectory} shows examples of trajectories of a projectile.
+
+\begin{figure}[hbtp]
+\includegraphics[width=\textwidth]{img/projectile-trajectory-graph.png}
+\caption{Example of projectile trajectories.} 
+\label{fig:projectile-trajectory} 
+\end{figure}
+
 When the angle of launch is known, the only remaining task is to know when how long it takes the projectile to get to the target, and thus when to shoot.
 
 \subsection{Transformation from Kinect Coordinates to Turret}
