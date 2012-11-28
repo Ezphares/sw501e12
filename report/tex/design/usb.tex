@@ -1,0 +1,6 @@
+\section{USB-protocol}
+The USB-protocol needs to connect the results from the Kinect to the NXT. The specifications of the USB-protocol is not easily changable, as both the Kinect program and the NXT program is dependent on it, and a change would cause partial rewrites of both programs. It is therefore important for the USB-protocol specifications to be decided early, and not changed.
+
+The USB-protocol needs to be able to connect the computer to the NXT, and in case of no NXT found, it should give an error.
+When the NXT is connected, and the Kinect has found an object, the USB-protocol will facilitate the sending of the object-specific data.
+More specifically, the data that needs to be sent is the x, y, and z position of the object, and the observed x, y, and z speed of the object.
