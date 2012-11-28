@@ -26,3 +26,36 @@ Thus, the architecture ends up like seen on \autoref{fig:archictecture1}
 \end{figure}
 
 \subsection{Software Choices}
+
+\subsubsection*{Operating Systems}
+nxtOSEK was chosen for the NXT, because the ability to program in C or C++ gives a lot of control over the
+system, and both languages are compiled from source to machine code in a reasonably predicable fashion, which
+is one of the main priorities of the system. The various options for scheduling,
+while very nice for customizability, did not have much influence on this choice, as the system is simple enough
+that it should be doable with most scheduling systems.
+
+For the PC, a Linux operating system was chosen, specifically an Xubuntu 12.04. Linux was chosen for the ease
+of installing third party drivers and libraries, and for the slight performance gain over a Windows installation.
+Should it prove too slow or unpredictable, it will be easy to move to a Linux server distribution for even
+greater performance gains. 
+
+\subsubsection*{Libraries and Languages}
+The choice of language for programming the NXT ended at C, mainly because the primary gain from using C++ was
+determined to be object representations of different hardware components. This was considered unnecessary,
+and might even have reduced the predictability of the resulting machine code.
+
+Using a Linux PC removes the possibility to use the Microsoft Kinect SDK for communication with the
+Kinect camera, so the freenect library will be used instead. And since the targets will be found using image
+data, \ac{opencv} will be implemented as well.
+
+The language chosen for implementing the image analysis was Python. Using a high-level scripting language for
+this part after arguing for performance and predictability may seem strange, but there are several reasons for
+this.
+
+For one, the PC-Kinect part of the system is, from a real-time perspective considered to be a sensor that
+happens to be plugged in to the USB port of the NXT, so when it comes to predictability, the important thing is
+the data being sent.
+When it comes to performance, the Python script itself does not do a lot of calculations, as all libraries used
+are implemented as calls to compiled C code. This, combined with the fact that most of the delays in this part
+of the system comes from I/O (Kinect and USB), made the group prioritize the ease of writing Python over the
+speed of C.
