@@ -22,7 +22,7 @@ To know when to launch the projectile, and at which angle, it is necessary to kn
 \label{fig:projectile-trajectory} 
 \end{figure}
 
-When the angle of launch is known, the only remaining task is to know when how long it takes the projectile to get to the target, and thus when to shoot.
+When the angle of launch is known, the only remaining task is to know how much time it takes the projectile to get to the target, and thus when to shoot.
 
 \subsection{Transformation from Kinect Coordinates to Turret}
 The Kinect returns coordinates in a rather odd fashion. The depth measurement is measured in an 11 bit \texttt{int} array\cite{kinectdistance}. The distance is thus not measured in a distance of millimeters, but instead in a distance of arbitrary numbers from 0 to 2047. Furthermore, the distance measured is not linear, it is quadratic, meaning that distances close to zero have a higher precision than distances further away.
