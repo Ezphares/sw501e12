@@ -32,7 +32,7 @@ class Analyzer(object):
         if not nousb:
             self.usb = Usbcom()
         self.lock_match = Lock()
-		self.lock_array = Lock()
+        self.lock_array = Lock()
         
         cv2.namedWindow(self.window)
         
@@ -66,9 +66,9 @@ class Analyzer(object):
         else:
             c = CompositeData(self.last_frame[1][0], data, self.last_frame[1][1])
         
-		self.lock_array.acquire()
+        self.lock_array.acquire()
         self.frames.append(c)
-		self.lock_array.release()
+        self.lock_array.release()
         self.frames_captured += 1
         self.last_frame = ('none', ())
         self.lock_match.release()
@@ -94,11 +94,11 @@ class Analyzer(object):
                 self.objects.remove(o)
     
     def detect_objects(self):
-		self.lock_array.acquire()
-		temp_frames = [o for o in self.frames]
-		self.frames = []
-		self.lock_array.release()
-	
+        self.lock_array.acquire()
+        temp_frames = [o for o in self.frames]
+        self.frames = []
+        self.lock_array.release()
+
         for frame in temp_frames:
             try:
                 gray = cv2.cvtColor(frame.image, cv.CV_BGR2GRAY)
