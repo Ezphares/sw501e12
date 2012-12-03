@@ -14,7 +14,7 @@ If the object is flying, or it in other ways are moving up or down, there is a w
 When the targets position has been predicted, the projectile should be launched and hit the target. To know where to shoot the projectile at, the trajectory of the projectile must be calculated.
 The projectiles trajectory will be parabolic\cite{trajectoryanalysis}, thus the calculations needed will be to find the derivative of a quadratic equation.
 
-To know when to launch the projectile, and at which angle, it is necessary to know the speed of the projectile, the distance to the predicted target, and the height difference between the cannon and the target. Once this is known, it is possible to calculate the trajectory that the projectile will have to travel to hit the target, and thus calculate the angle of launch. \autoref{fig:projectile-trajectory} shows examples of trajectories of a projectile.
+To know when to launch the projectile, and at which angle, it is necessary to know the speed of the projectile, the distance to the predicted target, and the height difference between the cannon and the target. Once this is known, it is possible to calculate the trajectory that the projectile will have to travel to hit the target, and thus calculate the angle of launch. The projectile will fly in a parabolic trajectory, two different trajectories can hit the same target, \autoref{fig:projectile-trajectory} shows a high angle and a low angle shot.
 
 \begin{figure}[hbtp]
 \includegraphics[width=\textwidth]{img/projectile-trajectory-graph.png}
@@ -22,7 +22,7 @@ To know when to launch the projectile, and at which angle, it is necessary to kn
 \label{fig:projectile-trajectory} 
 \end{figure}
 
-When the angle of launch is known, the only remaining task is to know when how long it takes the projectile to get to the target, and thus when to shoot.
+When the angle of launch is known, the only remaining task is to know how much time it takes the projectile to get to the target, and thus when to shoot.
 
 \subsection{Transformation from Kinect Coordinates to Turret}
 The Kinect returns coordinates in a rather odd fashion. The depth measurement is measured in an 11 bit \texttt{int} array\cite{kinectdistance}. The distance is thus not measured in a distance of millimeters, but instead in a distance of arbitrary numbers from 0 to 2047. Furthermore, the distance measured is not linear, it is quadratic, meaning that distances close to zero have a higher precision than distances further away.
