@@ -1,6 +1,28 @@
 \section{Image Analysis System}
+The purpose of the image analysis application is to convert the raw input from the Kinect sensor into a detected
+object, at which our turret may fire. To do this, it should receive image and depth data from the Kinect.
+This will happen asynchronously, and therefore one frame of each image and depth must be matched to create a
+"composite" frame, which should represent a view of the world at a specific point in time. This system must
+also be able to handle a dropped frame from either part of the sensor, so that if one drops frames more
+often than the other, the frames stay in sync. This can easily be done using the timestamps added to the data
+by the Kinect.
 
-The image analysis system is written in Python, so it should be divided into several modules containing classes
+The system must then run image analysis on the image data stored, and use the results combined with the depth
+data to determine detected objects position in 3D space. Any detected object must then be matched with past
+detected object, to see if it is reasonably the same object. If it is, the existing object should be updated,
+if not, a new object should be saved.
+
+Finally the system should check if any objects are suitable for targeting, for example by checking the amount of
+data available on the object. If any object is suitable, it should be encoded and send to the NXT.
+This can be visualized with the flowchart seen in \autoref{fig:nxtkinectflow} .
+
+\begin{figure}[hbtp]
+\includegraphics[width=0.90\textwidth]{img/nxtkinectflow.pdf}
+\caption{Flowchart} 
+\label{fig:nxtkinectflow} 
+\end{figure}
+
+As the system is written in Python, it should be divided into several modules containing classes
 and functions related to that module. The necessary modules for this system are:
 \begin{itemize}
   \item{Analyzer}\\

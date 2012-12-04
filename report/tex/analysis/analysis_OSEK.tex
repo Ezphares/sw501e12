@@ -1,10 +1,17 @@
 \section{nxtOSEK}
-nxtOSEK~\cite{osek_os} is a open source Real-Time operating system based on the OSEK specification~\cite{osek_spec}, it requires a custom firmware for the NXT brick.
-nxtOSEK comes with features that enable ANSI C/C++ programming using a GCC compiler. It also includes a C/C++ API for NXT sensors, motor and other devices, which makes it possible to interact with the LEGO MINDSTORMS platform. nxtOSEK comes with TOPPERS/JSP (Just Standard Profile) which is a real time kernel written in C that provides real time multitasking features.
-nxtOSEK provides a wide variety of features such as task management, synchronization, interrupt management, alarms, intra processor message handling and error treatment. Some of the features that might be useful in our context will be described briefly in the following sections.
+The NXT ships with LEGO's own operating system, which LEGO has released as open source. There are however several other open source operating systems that provide other features. 
+Among the commonly used operating systems are leJOS, BrickOS and nxtOSEK.
 
-\subsection{Task management} % (fold)
-\label{sub:task_management}
+LeJOS is small Java Virtual Machine that can be ported to the LEGO NXT brick\cite{lejos}. LeJOS provides object oriented programming in the form of Java. It also provides real-time functionality such as preemptive tasks, recursion, synchronization, exceptions, Java types (including float, long and String) and single and multidimensional arrays with more. 
+
+GNAT Ravenscar Edition is a general public license (GPL) compilation system for the LEGO NXT. It provides ADA development environment for the NXT brick. However it requires the custom firmware nxtOSEK\cite{ada}.
+
+nxtOSEK~\cite{osek_os} is a open source real-time operating system based on the OSEK specification~\cite{osek_spec}, it requires a custom firmware for the NXT brick.
+nxtOSEK comes with features that enable ANSI C/C++ programming using a GCC compiler. It also includes a C/C++ API for NXT sensors, motor and other devices, which makes it possible to interact with the LEGO MINDSTORMS platform. nxtOSEK comes with TOPPERS/JSP (Just Standard Profile) which is a real time kernel written in C that provides real time multitasking features.
+nxtOSEK provides a wide variety of features such as task management, synchronization, interrupt management, alarms, intra processor message handling and error treatment. Some of the features that might be useful in our context will be described briefly in the following sections. 
+
+\subsection{Task management in OSEK} % (fold)
+\label{sub:task_management_in_osek}
 Tasks are a convenient way of dividing complex control software according to their real time requirements. Tasks provide the framework for the execution of functions. 
 The OSEK operating system supports two types of tasks, basic and extended tasks and OSEK has it's own scheduler.
 \textbf{Basic tasks} only release the processor if they terminate, if the OS switches to a task with a higher priority or if the task gets an interrupt.
@@ -36,4 +43,4 @@ Groups of tasks combines aspects of preemptive and non preemptive behavior. Task
 Mixed preemptive scheduling is exactly what the name suggests. The system contains task that are preemptive and tasks that are non preemptive. The active scheduling scheme depends on the task that is executing. If the running task is preemptive, preemptive scheduling is performed. If the running task is non preemptive, then non preemptive scheduling is performed. 
 
 Scheduling selection is done by specifying task priorities and assigning preemption as attributes. The task type (basic or extended) is independent of the scheduling policy. 
-% subsection task_management (end)
+% subsection task_management_in_osek (end)
