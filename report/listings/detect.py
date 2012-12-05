@@ -11,7 +11,7 @@ class Analyzer(object):
             #...
 			for circle in circles[0]:
                 x, y = circle[0], circle[1]
-                z = depth[y * 640 + x]
+                z = depth[y * KinectData.hres + x]
                 p = Vector3(from_kinect = KinectData(depth = z, h = x + DetectedObject.offset_x, v = y + DetectedObject.offset_y))
                 assigned = (None, Analyzer.tracking_max_distance)
                 for o in self.objects:
