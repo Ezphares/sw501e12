@@ -12,7 +12,7 @@ The worst-case behavior will be compared to the deadline of the system, to check
 
 Real-time scheduling algorithms put emphasis on the timing requirements of each process, even if this means a lower overall system performance. This is in stark contrast to the general-purpose scheduling algorithms, such as the Linux scheduler. These general-purpose schedulers focus on fairness, efficiency and throughput. Meaning that every process must at some time get processor time, the scheduler algorithm must use as few resources as possible and that the general performance must be as high as possible.
 
-Some of the more common concepts used iin real-time schedulers are Cyclic Executive and Task-Based Scheduling (ex. FPS and EDF), these all follow the Simple Process Model. This Simple Process Model describes a set of properties that a program must comply with, if these  schedulers can be used.
+Some of the more common concepts used iin real-time schedulers are Cyclic Executive and Task-Based Scheduling (ex. Fixed Priority Scheduling and Earliest Deadline First), these all follow the Simple Process Model. This Simple Process Model describes a set of properties that a program must comply with, if these  schedulers can be used.
 
 These properties are as follows\cite{simpleprocessmodel-slides}:
 
@@ -34,7 +34,7 @@ The Cyclic Executive scheduler expects a fixed set of periodic tasks. The idea o
 
 \begin{figure}[hbtp]
 \center
-\includegraphics[width=\textwidth]{img/cyclic-exec.png}
+\includegraphics[width=.7\textwidth]{img/cyclic-exec.png}
 \caption{An example of the Cyclic Executive scheduler} 
 \label{fig:cyclic-exec} 
 \end{figure}
@@ -43,4 +43,30 @@ An example of a Cyclic Executive scheduler is shown on \autoref{fig:cyclic-exec}
 The Cyclic Executive scheduler is very easy to implement, but it is difficult to construct and maintain.
 
 \subsection{Task-Based Scheduling}
-There will be a description of Task-Based Scheduling here.
+Where the Cyclic Executive scheduler has a list of tasks that are executed in a specific order, the Task-Based scheduling has a list of tasks that are scheduled by the operating system based on each tasks priority. This priority can be fixed for each task, or it can be dynamic and chosen by the scheduler on runtime.
+
+Task-Based scheduling can use preemption to allow a higher priority task to stop a lower priority task when it becomes ready to to execute. This can be used to ensure that a high priority task always makes its deadline. This, however, can lead to race conditions, if two tasks needs to use the same resource.
+
+\subsubsection{Fixed Priority Scheduling}
+Choosing the tasks priorities in a Fixed Priority Scheduler (FPS) can be done by using the rate monotonic policy. Rate monotonic is a policy that assigns priorities that are inversly proportional withe the tasks periods, meaning that the task with the lowest period will get the highest priority.
+
+\begin{figure}
+\center
+\begin{tabular}{ l | l | l }
+    \hline                        
+    \textbf{Task} & \textbf{Period (ms)} & \textbf{Priority}  \\
+    $T_1$ & 20 & High \\
+    $T_2$ & 60 & Low \\
+    $T_3$ & 40 & Medium \\
+    \hline  
+\end{tabular}
+\caption{Tasks with fixed priorities.}
+\label{fig:fps}
+\end{figure}
+
+Shown in \autoref{fig:fps} are three tasks with assigned priorities, task $T_1$ has the highest priority because it has a period of 20 ms, where as task $T_2$ has the lowest priority because it has a period of only 60 ms.
+
+\subsubsection{Earliest Deadline First Scheduler}
+The Eadliest Deadline First (EDF) scheduler is a dynamic priority scheduler that chooses the tasks priorities according to their deadlines. The task with the earliest deadline will be given the highest priority to ensure that it makes that deadline.
+
+Because EDF requires the system to choose priorities on runtime, it has a larger overhead than both FPS and Cyclic Executive. EDF is also less predictable than FPS and Cyclic Executive, and if a task misses its deadline it can lead to other tasks also unnecessarily missing their deadlines.
