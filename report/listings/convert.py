@@ -1,6 +1,5 @@
 class KinectData(object): 
 	#...
-
 	def depth_mm(self):
 		return 0.1236 * math.tan(self.depth / 2843.5 + 1.1863) * 1000.0
 
@@ -12,7 +11,6 @@ class KinectData(object):
 
 class Vector3(object):
 	#...
-
 	def _kinect(self, kinect_data):
 		if type(kinect_data) != KinectData:
 			raise TypeError('Expected a KinectData instance')
@@ -25,4 +23,3 @@ class Vector3(object):
 		dist2 = math.sqrt(self.x * self.x + self.y * self.y)
 
 		self.z = int(math.sqrt(depth * depth - dist2 * dist2))
-
