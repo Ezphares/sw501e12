@@ -1,0 +1,21 @@
+\section{Image Analysis System}
+
+Implementing the design from \autoref{image_analysis_design} did reveal some interesting problems. One of these
+was the conversion from a location detected by the Kinect, to a point in a 3D coordinate system. The code involved
+in this can be seen in \autoref{fig:kinectconvert}. The functions on the KinectData object are preliminary conversions,
+as the raw data is not very useful for position calculations: The $h$ and $v$ values are pixel coordinates, and the $depth$
+is received using a formula giving more precise results at close range.
+
+\begin{figure}[hbtp]
+\lstinputlisting[language=Python]{listings/convert.py}
+\caption{Kinect to Coordinate conversions}
+\label{fig:kinectconvert} 
+\end{figure}
+
+The $h$ and $v$ values are converted to degrees by first dividing them with the resolution of the received image, getting
+a number between 0 and 1, which is then multiplied by the field of view of the Kinect. The depth is converted to
+millimeters. At this point the law of sines can be used to find the $x$ and $y$ coordinates of the object, also in
+millimeters, and with those, Pythagoras' theorem can be used to find the $z$ coordinate.
+
+
+
