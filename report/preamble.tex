@@ -58,27 +58,21 @@
 
 % CODE %
 \usepackage{listings}
+\usepackage[scaled]{beramono} % Better font for listings
 \usepackage{color}
 \definecolor{gray}{rgb}{0.4,0.4,0.4}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 \lstset{
-  basicstyle=\ttfamily,
-  columns=fullflexible,
-  showstringspaces=false,
-  commentstyle=\color{gray}\upshape,
-  basicstyle=\small,
-  numberstyle=\footnotesize,
+  tabsize=4,
+  breaklines=true,
   numbers=left,
   captionpos=b,
   stepnumber=1,
   numbersep=10pt,
-  tabsize=2,
-  breaklines=true,
-}
-
-
-% Neat-o referencer...o.
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+}% Neat-o referencer...o.
 \usepackage{bookmark,hyperref}
 \usepackage{nameref}
 

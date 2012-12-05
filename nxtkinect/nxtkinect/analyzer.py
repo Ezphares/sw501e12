@@ -125,6 +125,8 @@ class Analyzer(object):
                 
                 assigned = (None, Analyzer.tracking_max_distance)
                 for o in self.objects:
+                    if o.age == 0:
+                        continue
                     pos = o.get_position()
                     dist = len(pos - p)
                     if dist < assigned[1]:
