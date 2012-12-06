@@ -1,1 +1,15 @@
 \section{NXT Application}
+The application has the following tasks, events etc:
+
+\lstinputlisting[language=C, caption=Declared Objects, label=lst:declaredobjects]{listings/declares.c}
+
+The counter is implemented because this is the only way to keep track of time in the NXTOSEK OS \cite{osek_spec}.
+Resources are shared resources that need to be protected using mutual exclusion. The Target struct is implemented as a shared resource because this is the easiest way to share information between tasks.
+
+It should be noted that the last 2 constants are determined by empirical evidence in the analysis. The horizontal relation is the relation between servo motor and the turntable responsible for horizontal movement.
+
+Below is a code snippet documenting the implementation of the mathematical formulas used to aim. The prediction double is set according to the scheduling in \autoref{scheduling}. This is the most advanced math on the NXT brick.
+
+\lstinputlisting[language=C, caption=Horizontal and Vertical Aim, label=lst:aim]{listings/aim.c}
+
+As seen, the implementation is indeed very simple and straightforward given the mathematical formulas explained in the analysis, and this can be said for all tasks in the application. 
