@@ -7,7 +7,7 @@ The application on the NXT brick should be responsible for aiming and firing the
 	\label{nxtdesign}
 \end{figure}
 
-As shown, the application should first establish the USB connection to the Kinect via a computer, then reset position of the cannon and wait for the Kinect to supply coordinates. When the coordinates are received, the NXT should calculate where the target will be when the cannon is ready to fire, move the turret accordingly and fire.
+As shown, the flows is very linear: the application should first establish the USB connection to the Kinect via a computer, then reset position of the cannon and wait for the Kinect to supply coordinates. When the coordinates are received, the NXT should calculate where the target will be when the cannon is ready to fire, move the turret accordingly and fire.
 
 This can be broken down into tasks for the NXT program, closely corresponding to the processes in \autoref{nxtdesign}:
 \begin{itemize}
@@ -23,3 +23,11 @@ This can be broken down into tasks for the NXT program, closely corresponding to
 It would be beneficial to have the same task establish connection to the Kinect and poll for coordinates, and have another task perform both the horizontal and vertical aim, for simplicity.
 
 The conversion from Kinect coordinates to degrees for the motors should incorporate the mathematical equations from \autoref{maththeory} to compensate for gravity.
+
+\subsection{Design Decisions}
+First of all, the reset task should move the turret horizontally and vertically until the touch sensors receive input, and then move to the initial position. This will ensure that the aim is always precise and is a trivial task. The task should fire an event to the task handling interaction with the Kinect once the reset is complete, to start polling for a suitable target.
+
+From the design of the USB protocol it is known that the data received will be two sets of (x,y,z)-coordinates which should be converted from USB-compatible char arrays to integers and stored in two 3D vectors, similar to how the image analyzer handles them, for consistency and ease of use. The task responsible for the USB connection should poll for coordinates every 1 ms, as mentioned in the NXTOSEK specifications \cite{osek_spec}. This should all be done in one task. Once coordinates are safely in place, the task should fire an event to let the aim-task know, that a target has been acquired.
+
+Once coordinates are received and stored, the aim function should be able to predict from the vectors where the target will be once aim is complete, using velocity and a set deadline for when the aim should be completed. Afterwards the mathematical functions mentioned in \autoref{maththeory} should be applied, giving the amount of degrees each motor should move. The adjustment of motors can be concurrent or sequential, depending on the implementation. The task shall set an alarm with the deadline for aim done, and this alarm should start the fire task, which should then fire the projectile. The fire task is trivial, like the reset task.
+
