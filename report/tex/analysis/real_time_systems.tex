@@ -1,0 +1,22 @@
+\section{Real-Time Systems}
+
+A real-time system is defined as "an information processing system which has to respond to externally generated input stimuli within a finite and specified period of time." \cite{realtime} Seeing as the premise for this project is to create a turret able to respond to seeing a target by firing a projectile before the target is out of range, it can be considered a real-time system. The characteristics of a real-time system are as follows:
+\begin{itemize}
+	\item Predictability: The system guarantees that the behaviour is always predictable. The response time, i.e. the time from a task is started until it finishes is also analyzed and the worst-case response time is known. Seeing as the turret should always behave the same way, so that it is reliable enough that human lives can depend on it, predictability is a high priority in this project.
+		\begin{itemize}
+			\item Predictability is more important than effciency, which means it is more important for the system to behave exactly the same every time than it is for the system to not use a lot of memory.
+		\end{itemize}
+	\item Concurrency: concurrency means several components operating in parallel, however this will not be elaborated on, as it will not have any great impact on the project. 
+	\item Interaction: sensors, actuators, specialised hardware (with special programming needs), in the case of this project there will be a sensor to detect targets, and actuators to enable the turret to position and fire the projectile.
+	\item Digital/Analogue: sending sample inputs (from sensors) to the computer is an analogue to digital conversion (ADC), numerical computations which result in outputs is a digital to analogue conversion (DAC).
+	\item Scale: real-time systems can be large and small, few and numerous.
+	\item Safety-critical: failure may mean loss of lives, e.g. if the turret was a real missile launcher, failure to launch a missile at a hostile target would certainly mean loss of lives.
+\end{itemize}\cite{realtime}
+
+Real-time systems can be either hard or soft real-time systems, defined as below:
+\begin{itemize}
+\item Hard Real-Time: System must respond before the specified deadline, otherwise the system may fail. Example: Brakes
+\item Soft Real-Time: System should respond before the specified deadline, but may still work if occasional deadlines are missed. Possibly in a degraded mode. En example: Video conversations.
+\end{itemize}\cite{realtime}
+
+Given the fact that missing a deadline for a task in a turret could potentially mean loss of human lives, this system should be regarded as a hard real-time system.

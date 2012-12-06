@@ -31,7 +31,8 @@ class Analyzer(object):
         self.nxtwaiting = True
         if not nousb:
             self.usb = Usbcom()
-        self.lock = Lock()
+        self.lock_match = Lock()
+        self.lock_array = Lock()
         
         cv2.namedWindow(self.window)
         
@@ -48,15 +49,15 @@ class Analyzer(object):
         self.process_frame('depth', data, timestamp)
 
     def process_frame(self, t, data, timestamp):
-        self.lock.acquire()
+        self.lock_match.acquire()
         if type == self.last_frame[0] or self.last_frame[0] == 'none':
             self.last_frame = (t, (data, timestamp))
-            self.lock.release()
+            self.lock_match.release()
             return
         
         if timestamp - self.last_frame[1][1] > Analyzer.frame_threshold:
             self.last_frame = (t, (data, timestamp))
-            self.lock.release()
+            self.lock_match.release()
             return
         
         c = None
@@ -65,10 +66,12 @@ class Analyzer(object):
         else:
             c = CompositeData(self.last_frame[1][0], data, self.last_frame[1][1])
         
+        self.lock_array.acquire()
         self.frames.append(c)
+        self.lock_array.release()
         self.frames_captured += 1
         self.last_frame = ('none', ())
-        self.lock.release()
+        self.lock_match.release()
 
     def body(self, *args):
         #self.timer()
@@ -91,7 +94,12 @@ class Analyzer(object):
                 self.objects.remove(o)
     
     def detect_objects(self):
-        for frame in self.frames:
+        self.lock_array.acquire()
+        temp_frames = [o for o in self.frames]
+        self.frames = []
+        self.lock_array.release()
+
+        for frame in temp_frames:
             try:
                 gray = cv2.cvtColor(frame.image, cv.CV_BGR2GRAY)
                 gray = cv2.GaussianBlur(gray, Analyzer.blur_strength, 0)
@@ -117,6 +125,8 @@ class Analyzer(object):
                 
                 assigned = (None, Analyzer.tracking_max_distance)
                 for o in self.objects:
+                    if o.age == 0:
+                        continue
                     pos = o.get_position()
                     dist = len(pos - p)
                     if dist < assigned[1]:
@@ -136,8 +146,6 @@ class Analyzer(object):
         
             cv2.imshow(self.window, frame.image)
             #print len(self.objects)
-            
-        self.frames = []
     
     def timer(self):
         if len(self.frames) > 0:
