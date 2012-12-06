@@ -1,5 +1,83 @@
 \section{Scheduling}
 
 As seen in \autoref{nxtdesign} the embedded application should be split up in several tasks.
+The most important parts of determining scheduling in this case, is when the task should run
+(period), when it should be done (deadline), and how long it actually takes (cost).
 
+Since the LEGO Technic competition cannon requires a manual reset, it was decided that
+the program should be scheduled to run once, and that a manual reset of the software is
+acceptable as well, since access to the NXT is as easy as access to the cannon.
 
+The tasks are summarized below:
+
+\begin{itemize}
+  \item{Reset}\\
+  Resets the turret to a known position. This should be released once, as the application starts.
+  It has no fixed deadline, as it is part of initialization, and the time it takes is
+  simply a necessity for the system to work. The time it takes is determined by the direction
+  of the turret before the system starts.
+  \item{Kinect}\\
+  Reads from the USB, and processes data if any is received. The nxtOSEK specifications dictate
+  that the USB is processed every millisecond, so that will be the period of this task. That also
+  means it has a deadline of 1 ms, lest the USB connection is timed out. The time taken to complete
+  this is slightly longer when data is received, as some processing takes place immediately.
+  \item{Aim}\\
+  Predicts target movement and aligns the turret to the target point. This should be run once,
+  when data is received in the Kinect task. It's deadline is "before the turret has to fire" - this
+  is described in greater detail, below. The time it takes is determined by how far the turret has
+  to turn to hit it's target.
+  \item{Fire}\\
+  Fires the projectile. Should be run once, at a set time after receiving data, depending on the
+  prediction time, and the distance between the cannon and the target. The deadline is before 
+  the target passes, and it takes a fixed time.
+\end{itemize}
+
+\subsection{Turret firing time}
+The point in time at which the turret has to fire can be described as\\
+\begin{math}
+Moment_{fire} = Moment_{received} + Time_{prediction} - ( Distance_{target} / Speed_{projectile} )
+ - Time_{delay}
+\end{math}
+Where:
+\begin{itemize}
+  \item $Moment_{fire}$ is the absolute time at which the Fire task is released.
+  \item $Moment_{received}$ is the absolute time at which data was received on the USB.
+  \item $Time_{prediction}$ is how far into the future motion is predicted.
+  \item $Distance_{target}$ is how far from the cannon the target is PREDICTED to be.
+  \item $Speed_{projectile}$ is the average speed of the projectile moving to the target.
+  \item $Time_{delay}$ is the fixed delay in the system, comprised of the time to send data from the
+  Kinect to the NXT, and the time after starting the fire task until the projectile is actually released.
+\end{itemize}
+The only one of these parameters that can be changed as desired is $Time_{prediction}$. However
+there is another dynamic parameter, $Distance_{target}$ that needs to be taken into account.
+There is two options for this:
+\begin{enumerate}
+  \item Increasing $Time_{prediction}$ based on the distance. This means that $Moment_{fire}$
+  always have a offset from $Moment_{Received}$, and as that keeps the deadline for the Aim
+  task, fixed as well.
+  \item Keeping $Time_{prediction}$ constant, reducing the time between $Moment_{Received}$
+  and $Moment_{fire}$ based on distance. This changes the deadline for Aim, but keeps
+  the prediction calculation easier.
+\end{enumerate}
+The first option would seem best at first, however, initial experiments with the Kinect and
+image analysis revealed some imprecisions in determining the target's motion. This means
+that a change to prediction time, also makes predictions less accurate, since predicting
+farther into the future inflates any such imprecisions. Instead the second option was chosen,
+even though this puts an effective maximum distance on the turret, namely the distance where
+the time to fire will occur before aiming is done.
+
+\subsection{Method of Scheduling}
+nxtOSEK gives us access to a powerful scheduler, which may be overkill for this system,
+considering that three of the tasks, Reset, Aim and Fire, should never be released at
+the same time. This coincidentally also makes them sporadic, in a real-time context,
+which normally whould make them harder to account for than periodic tasks. These
+are released as a one-time autorun, instantly by event, and by a dynamic alarm
+respectively.
+
+The only periodic task, Kinect, is however scheduled to run each millisecond, and
+should be prioritized higher than the other tasks, as well as allow full pre-emption,
+to prevent it from timing out.
+
+The simple nature of task timings make for a very predictable system, as long as it's
+restrictions are complied with. It also means, however, that these restrictions are
+hard, and not complying will make the system do nothing at all.
