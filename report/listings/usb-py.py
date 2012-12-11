@@ -19,4 +19,3 @@ def send_data(self, pos_x, pos_y, pos_z, speed_x, speed_y, speed_z):
     data.extend(self.convert(speed_y))
     data.extend(self.convert(speed_z))
     data = array.array('i', data)
-    print data
