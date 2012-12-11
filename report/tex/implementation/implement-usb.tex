@@ -1,0 +1,9 @@
+\section{USB-protocol}
+When the Kinect has found the coordinates and speed vector of the target, this data will be sent to the NXT. Before sending the coordinates and the speed vector, each are in the function \texttt{convert} on line 26 to 35 in \autoref{lst:usbpy} converted to an array of three items. These arrays are combined into a single array ín the function \texttt{send_data} on line 38 to 47, this is how they are sent over the USB connection.
+
+\lstinputlisting[language=Python, firstnumber=26, caption=Conversion of target position and speed vector, label=lst:usbpy]{listings/usb-py.py}
+
+When the NXT has received the data, it will be converted from the array into integers. \autoref{lst:usbc} shows part og the task \tt{TaskKinect}. Line 94 to 100 shows each part of the target position and the speed vector being converted back from the array to integers. Each of the parts joins three elements from the array to make the integer. 
+Line 103 sets the event \texttt{EvTargetAcquired} to true, so that the task \texttt{TaskAim} will start once the \texttt{TaskKinect} is terminated.
+
+\lstinputlisting[language=C, firstnumber=93, caption=NXT conversion of array to ints, label=lst:usbc]{listings/usb-nxt.c}

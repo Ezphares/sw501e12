@@ -21,13 +21,15 @@ class DetectedObject(object):
         motion = Vector3()
         for m in motion_set:
             motion += m
-        
-        motion /= len(motion_set)
-        
+             
         dt = self.end - self.start
         s = dt.total_seconds()
         
         motion /= s        
+
+	# DEBUG
+	motion.z = 0
+	# /DEBUG
         
         return motion
     
@@ -41,7 +43,7 @@ class DetectedObject(object):
                 mov.x, mov.y, mov.z]
     
     def is_suitable(self):      
-        return len(self.coordinates) >= 3
+        return len(self.coordinates) >= 10
     
     
 class CompositeData(object):
