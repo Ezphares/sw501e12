@@ -7,12 +7,12 @@ The application on the NXT brick should be responsible for aiming and firing the
 \begin{figure}[hbtp]
 	\includegraphics[scale=0.5]{img/nxtdesign.png}
 	\caption{Process flow of NXT application}
-	\label{nxtdesign}
+	\label{fig:nxtdesign}
 \end{figure}
 
 As shown, the flows is very linear: the application should first establish the USB connection to the Kinect via a computer, then reset position of the cannon and wait for the Kinect to supply coordinates. When the coordinates are received, the NXT should calculate where the target will be when the cannon is ready to fire, move the turret accordingly and fire.
 
-This can be broken down into tasks for the NXT program, closely corresponding to the processes in \autoref{nxtdesign}:
+This can be broken down into tasks for the NXT program, closely corresponding to the processes in \autoref{fig:nxtdesign}:
 \begin{itemize}
 	\item Establish USB connection
 	\item Reset turret position

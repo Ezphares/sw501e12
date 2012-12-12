@@ -29,9 +29,10 @@ The NXT sensors are as following\cite{nxtspec}:
 \item Ultrasonic sensors, that can be used to see and recognize objects, measure distances and detect movement. They work by sending out ultrasonic sound waves that bounce off objects and are sent back. By measuring the time it takes for the sound waves to come back, the sensor can calculate the distance to the object. The object has to have a flat surface for the ultrasonic sensor to detect it.
 \item Infrared sensors, these can like the ultrasound sensors measure distance, but instead of sound they use an infrared light emitter, and like the ultrasound sensor, measure the time it takes for the light to bounce off an object and return.
 \item Servo motors, that can rotate and move objects. Furthermore they have a built-in rotation sensor to allow the NXT to control their rotation, the NXT can also control the speed of the servo motors.
+\item Infrared obstacle detector, can detect an obstacle in six different zones.
 \end{itemize}
 
-The sensors that are most relevant for the project, are the servo motors to rotate the tower, the ultrasonic sensor and the touch sensors.
+The sensors that are most relevant for the project, are the servo motors to rotate the tower, the ultrasonic sensor, the infrared obstacle detector and the touch sensors.
 
 \subsection{Specifications for Kinect}
 
@@ -73,7 +74,7 @@ The tests show that while the ultrasound sensor is a bit unprecise between 50 an
 On the other side of the spectrum, however, the ultrasound sensor cannot measure above 160 cm, while the Kinect can measure precisely at least up to our maximum distance measured of 200 cm.
 Generally, the precision of both the ultrasound sensor and the Kinect is precise down to \textpm1 cm between 80 and 160 cm. The Kinect retains this precision up to at least 200 cm.
 
-Where the Kinect has a field of view that objects can enter, the ultrasound sensor can only measure the distance of an object straight in front of the sensor. The ultrasound sensor needs the help of another sensor to be able to do what the Kinect can do out of the box.
+Where the Kinect has a field of view that objects can enter, the ultrasound sensor can only measure the distance of an object straight in front of the sensor. The ultrasound sensor needs the help of another sensor to be able to do what the Kinect can do out of the box. Using a webcam in combination with the ultrasound sensor, could come close in functionality to the Kinect. Another option is to use a the infrared obstacle detector instead of a webcam in combination with the ultrasound sensor, this option will be limited in functionality compared to the webcam or Kinect solution, as the infrared obstacle detector only has six zones of detection.
 
 \subsection{Range of cannon}
 The cannon's range has been measured by repeatedly shooting the cannon from specific angles, and calculating the average travel distance of the projectile from a specific angle. \autoref{fig:cannon-range} shows the average ranges from the measured angles.
