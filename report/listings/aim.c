@@ -16,8 +16,6 @@ if (SetRelAlarm(AlarmFire, (int)prediction, 0) != E_OK)
 //Adjust for height difference of tower and kinect
 t->y -= 100;
 
-//extended Pythagoras for 3D, gets depth in mm
-
 //Take the arctangens of delta_z/delta_x, and calculate degrees.
 double radians = asin(t->x / depth);
 double raw_degrees = -radtodeg(radians);
