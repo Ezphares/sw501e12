@@ -1,4 +1,5 @@
 \section{USB protocol}
+\label{sec:design-usb}
 The USB protocol needs to connect the results from the Kinect to the NXT. The specifications of the USB protocol is not easily changable, as both the Kinect program and the NXT program is dependent on it, and a change would cause partial rewrites of both programs. It is important for the USB protocol specifications to be decided early, and not changed.
 Furthermore, the NXT has very limited memory, and the USB package size is limited to 64 bytes, the data will have to be as minimal as possible while still retaining all the important information. 
 
@@ -6,6 +7,6 @@ The USB protocol needs to be able to connect the computer to the NXT, and in the
 When the NXT is connected, and the Kinect has found an object, the USB protocol will facilitate the sending of the object-specific data.
 More specifically, the data that needs to be sent is the x, y, and z position of the object, and the observed x, y, and z speed of the object.
 
-The data will be sent as an array of \texttt{char}s, as this datatype is the only datatype that the USB protocol supports. Before our data can be inserted into this \texttt{char} array, they will each need to be split up, as one \texttt{char} cannot contain the information of an \texttt{int}. Each part of our data will thus be converted into an array of three \texttt{char}s, with the first \texttt{char} in the array containing only the sign bit. These arrays of three \texttt{char}s will then be combined into an array that contains all the information. This is the array that will be sent.
+The data will be sent as an array of chars, as this datatype is the only datatype that the USB protocol supports. Before our data can be inserted into this char array, they will each need to be split up, as one char cannot contain the information of an int. Each part of our data will thus be converted into an array of three chars, with the first char in the array containing only the sign bit. These arrays of three chars will then be combined into an array that contains all the information. This is the array that will be sent.
 
-When the NXT receives this array of \texttt{char}s, it will be converted back into \texttt{int}s, and the USB protocol will have completed its task.
+When the NXT receives this array of chars, it will be converted back into ints, and the USB protocol will have completed its task.
