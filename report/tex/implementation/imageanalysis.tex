@@ -28,14 +28,31 @@ in this can be seen in \autoref{lst:kinectconvert}. The functions on the KinectD
 as the raw data is not very useful for position calculations: The $h$ and $v$ values are pixel coordinates, and the $depth$
 is received using a formula giving more precise results at close range.
 
+The necessary calculations are all related to triangles, and figures showing the known values $h$, $v$ and $depth$,
+can be seen along with the desired values $x$, $y$ and $z$ in \autoref{fig:kinectfigside} and \autoref{fig:kinectfigtop},
+along with the triangles they can be represented with. This means that the calculations can be done with relatively
+simple trigonometric formulae.
+
 The $h$ and $v$ values are converted to degrees by first dividing them with the resolution of the received image, getting
 a number between 0 and 1, which is then multiplied by the field of view of the Kinect. The depth is converted to
 millimeters. At this point the law of sines is used to find the $x$ and $y$ coordinates of the object, also in
 millimeters, and with those, Pythagoras' theorem is used to calculate the $z$ coordinate.
 
+\begin{figure}[hbtp]
+\includegraphics[width=0.90\textwidth]{img/kinectfigside.pdf}
+\caption{Side view of Kinect and Object} 
+\label{fig:kinectfigside} 
+\end{figure}
+
+\begin{figure}[hbtp]
+\includegraphics[width=0.90\textwidth]{img/kinectfigtop.pdf}
+\caption{Top view of kinect and Object} 
+\label{fig:kinectfigtop} 
+\end{figure}
+
 \lstinputlisting[language=Python, caption=Kinect to Coordinate conversions, label=lst:kinectconvert]{listings/convert.py}
 
-\subsection{Detected object suitability}
+\subsection{Detected Object Suitability}
 
 Another problem was determining whether a detected object was a suitable target to fire at. The solution used here is
 checking whether the object has been on camera for 10 or more frames, as well having no frames between the start and
@@ -43,15 +60,14 @@ end where it was missing. This gives a reasonable security that the object is th
 to get a good average motion. Had this proved not to be enough, an algorithm to sort the saved positions for an object
 and remove any "strange" readings could be implemented.
 
-\subsection{Vector3 operator overloads}
-
-On the Vector3 class, several operators are overloaded, to make vector calculations more readable and writeable in the
-rest of the application. In particular, the \textbf{len} operator is overloaded to return the length of the vector, 
+\subsection{Vector Arithmetic}
+Several places in the application, some seen in the listings in this section, vector arithmetic is used. This is
+made simpler by overloading the necessary operators on the Vector3 class, mentioned in \autoref{image_analysis_design}.
+In particular, the \textbf{len} operator is overloaded to return the length of the vector, 
 adding and subtracting vectors to and from each other yields the expected vector, as well does dividing or multiplying
 the vector with any real number.
 
 The subtraction is very useful, as it can be used to find the vector describing the motion between two vectors describing
 points. Additions main use is to add two vectors describing motion to each other, getting the resulting total motion.
 Division is very useful for averaging a motion vector, in this case it is used to find the vector describing an objects
-motion/second. Multiplication ended up not being used in this application, but with division implemented, the function
-was left for consistency.
+motion/second.
