@@ -77,6 +77,7 @@ Generally, the precision of both the ultrasound sensor and the Kinect is precise
 Where the Kinect has a field of view that objects can enter, the ultrasound sensor can only measure the distance of an object straight in front of the sensor. The ultrasound sensor needs the help of another sensor to be able to do what the Kinect can do out of the box. Using a webcam in combination with the ultrasound sensor, could come close in functionality to the Kinect. Another option is to use a the infrared obstacle detector instead of a webcam in combination with the ultrasound sensor, this option will be limited in functionality compared to the webcam or Kinect solution, as the infrared obstacle detector only has six zones of detection.
 
 \subsection{Range of cannon}
+\label{cannonrange}
 The cannon's range has been measured by repeatedly shooting the cannon from specific angles, and calculating the average travel distance of the projectile from a specific angle. \autoref{fig:cannon-range} shows the average ranges from the measured angles.
 
 These tests have been performed with the cannon at 80 cm above the ground.
@@ -89,9 +90,23 @@ These tests have been performed with the cannon at 80 cm above the ground.
 
 We can gather from \autoref{fig:cannon-range} that the cannon shoots furthest at a 25 degree angle, where it shot the projectile a distance of 230 cm, and that shooting from 0 degrees gives the same result of 160 cm as shooting from 65 degrees. The results of the shots vary with a few centimeters in each direction from the average.
 
-%\subsection{Choice of hardware}
-%As we have easy access to the NXT, the use of it seems like the obvious choice. This means that the tower will also be built of LEGO, as the servo motors are built for this.
+\subsection{Projectile Speed}
+To measure the speed of the projectile,three videos of the projectile firing in front of lines with 10 cm between them were taken. The videos were then framed through to calculate the speed. Below is a figure showing the speed of the projectile.
 
-%The Competition Cannon has the ability to shoot in a range where both of our tested sensors can measure distance. The cannon is also precise enough that it should be possible to hit a moving target with it.
+\autoref{tab:projectile-speed} shows the results of our calculations.
 
-%Our central hardware choice is whether to use the supplied LEGO ultrasound sensor or the Kinect to measure distance. While the ultrasound sensor has the advantage of being able to measure distance to an object between 50 and 80 cm, it lacks ability in the upper distance range. The ultrasound sensor itself, however, is not enough to replace the Kinect. The ultrasound sensor can only measure distance to a single point, but to hit a moving object it is necessary to know both the speed and direction of an object as well as the distance to it. The Kinect does it all in one piece of hardware, for this reason, we will use the Kinect.
+\begin{table}[htbp]
+\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Test 1} & \textbf{Test 2} & \textbf{Test 3} \\
+\hline
+450 cm/s & 428 cm/s & 450 cm/s\\
+\hline
+$\sim$ 60 cm in 4 frames & $\sim$ 100 cm in 7 frames & $\sim$ 60 cm in 4 frames \\
+\hline
+\end{tabular}
+\caption{Initial speed of the projectile}
+\label{tab:projectile-speed}
+\end{table}
+
+These calculations show, that the cannon can hit any target closet than 2 meters in less than half a second. The speed measured is the initial speed.

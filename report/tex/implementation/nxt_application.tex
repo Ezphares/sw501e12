@@ -1,15 +1,40 @@
 \section{NXT Application}
-The application has the following tasks, events etc:
+The application on the NXT is written in C and corresponds closely with the tasks and math described in previous chapters.
+
+\subsection{Declarations}
+As seen in the design chapter \autoref{nxtdesign}, the application has the following tasks:
 
 \lstinputlisting[language=C, caption=Declared Objects, label=lst:declaredobjects]{listings/declares.c}
 
 The counter is implemented because this is the only way to keep track of time in the NXTOSEK OS \cite{osek_spec}.
-Resources are shared resources that need to be protected using mutual exclusion. The Target struct is implemented as a shared resource because this is the easiest way to share information between tasks.
 
-It should be noted that the last 2 constants are determined by empirical evidence in the analysis. The horizontal relation is the relation between servo motor and the turntable responsible for horizontal movement.
+Resources, as mentioned in the comments, are shared resources that need to be protected using mutual exclusion. The Target struct is implemented as a shared resource because this is the easiest way to share information between tasks.
+
+It should be noted that the constant $v$ is determined by empirical evidence. The test to determine velocity of the projectile is described in Analysis \autoref{cannonrange}. The cannon delay is an estimation found by empirically researching which delay gives the highest accuracy.
+
+The horizontal relation is determined by simple mathematics, i.e. the ratio between the various gears in the gearing system. In this case the calculation is $36/12/56$ seeing as the first gear has 36 cogs, the second 12 and the turntable 56. The layout of the gearing system can be seen in the turret design \autoref{turretdesign}. A small spiral responsible for rotating the turntable is omitted in this, seeing as one rotation of the spiral equals one cog on the turntable.
+
+\subsection{Tasks}
+Once the final target coordinates have been found, i.e. the predicted position of the target when aiming is done, the motors need to be set to the correct angle to hit. This is done in two separate stages. First the horizontal angle is calculated, then the vertical angle is calculated.
 
 Below is a code snippet documenting the implementation of the mathematical formulas used to aim. The prediction double is set according to the scheduling in \autoref{scheduling}. This is the most advanced math on the NXT brick.
 
 \lstinputlisting[language=C, caption=Horizontal and Vertical Aim, label=lst:aim]{listings/aim.c}
 
-As seen, the implementation is indeed very simple and straightforward given the mathematical formulas explained in the analysis, and this can be said for all tasks in the application. 
+To calculate the horizontal angle, the width (x) and depth (z) coordinates are needed. The tower just needs to point in the direction of the target, there is no arc on a shot to take into account. Because of this, the math to calculate the horizontal angle is rather simple. The formula used, is a trigonometric calculation that takes the x and z coordinates of the target, and subtracts the tower coordinates, to find the distance between them. Then we calculate the arctangent of $z \over x$, this gives a result in radians, which can be converted to degrees. The result is a degree, starting from 0 on the x-axis, 90 on the z-axis etc.
+
+Calculating the vertical angle is more difficult, because the trajectory of the projectile has to be taken into consideration. This trajectory depends on the speed of the projectile, the angle fired and the height fired from.
+
+\begin{figure}[htbp]
+$$tan_a = {v \text{ \textpm} \text{ } v^2 - 2g(y + {1 \over 2}g(z^2/v^2))^{1 \over 2} \over gz/v}$$
+\caption{Calculation of vertical angle to hit target}
+\label{fig:vertical-angle}
+\end{figure}
+
+\autoref{fig:vertical-angle} shows the formula to find the angle needed to hit a target: An equation is derived which includes the velocity of the projectile, $v$, the gravitational acceleration of the Earth $g$, the distance to the target $z$, and the height of the projectile over the ground $y$. 
+
+The result of this calculation is 0, 1 or 2 numbers. If the result does not return any numbers, the target is too far away for the projectile to hit it. In this case, the projectile will be fired without the vertical angle changing. 
+
+If the result is 1 or 2 numbers, those will be the angle or angles where the projectile will hit the target. If there are two targets to choose between, the one closest to 0\textdegree will be chosen. This is because the turret is reset to 0\textdegree \text{ }during initialization, and the closer to the initial position the firing position is, the faster the aiming is. 
+
+Part of this equation is based off the speed of the projectile, which was measured in \autoref{tab:projectile-speed}. 
