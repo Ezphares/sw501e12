@@ -93,23 +93,7 @@
 % Rettehak. Meget lettere end \checkmark
 \newcommand{\yes}{\checkmark}
 
-% Let's put in a lot of niceness in the display, yeh?
-\usepackage{fancyhdr} % Get some niceness into our headers.
 \pagenumbering{arabic} % Ensure page numbering in our desired form.
-\pagestyle{fancy}
-% Page design from fancyhdr.
-\fancyhead{}
-\fancyfoot{}
-\fancyhead[RO,LE]{\leftmark\\\rightmark}% afsnit information i toppen af sider, over stregen. 
-\fancyfoot[C]{\thepage}
-\setlength{\headheight}{23pt}
-
-% Rewrite header and footer commands.
-\renewcommand{\headrulewidth}{1.0pt}
-\renewcommand{\footrulewidth}{1.0pt}
-
-% Create a new command, HRule, to insert some nice horisontal rules on the title page.
-\newcommand{\HRule}{\rule{\linewidth}{0.3mm}}
 
 % New command for two figures, side by side.
 \newcommand{\twofigs}[6]
