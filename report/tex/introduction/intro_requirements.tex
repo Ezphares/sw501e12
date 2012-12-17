@@ -1,13 +1,13 @@
 \section{Requirements}
-Our project proposal states: 
+The project proposal states: 
 
-\emph{"Construct a tower with a missile launcher that monitors it's surroundings and shoots incoming vehicles."} 
+\emph{"Construct a tower with a missile launcher that monitors its surroundings and shoots incoming vehicles."} 
 
 This is the basis for the project.
 
-In order to successfully construct and implement such a tower with a corresponding launcher, we break the construction into smaller and more manageable tasks that need to be solved.
+In order to successfully construct and implement such a tower with a corresponding launcher, the construction is broken into smaller and more manageable tasks that need to be solved.
 
-We have decided to divide our project requirements into primary goals and secondary goals, respectively. The primary goals are the tasks need to be solved for the system to succeed. Namely detection of the incoming target, prediction of targets trajectory, aligning the cannon and firing. \autoref{fig:req} shows the goals for the project.
+The project requirements are divided into primary goals and secondary goals. The primary goals are the tasks that need to be solved for the system to succeed. Namely detection of the incoming target, prediction of targets trajectory, aligning the cannon and firing. \autoref{fig:req} shows the goals for the project.
 
 \begin{figure}[hptb]
 \centering
@@ -25,37 +25,27 @@ Firing    &   Range\\[1ex]
 \end{figure}
 
 The secondary goals for the project aim to refine and optimize the project. 
-In the following sections we will take a closer look at the individual goals in \autoref{fig:req}.
+The following sections will provide a closer look at the individual goals in \autoref{fig:req}.
 
 
 %Characteristics of Real-Time Systems 
 %som vi har tænkt os at opfylde
 %RTS slide 1
-\subsection{Real-time aspects} % (fold)
+\subsection{Primary Goals} % (fold)
 \label{sub:real_time_aspects}
 \emph{"A real-time system is an information processing system which has to
 respond to externally generated input stimuli within a finite and specified
-period of time."}\\
+period of time."\cite{realtime}}\\
+
+Given the description in the project proposal this is clearly a real-time system, seeing as it should be able to identify, target and hit a vehicle before it is out of range. 
 
 The most important feature of a real-time system is predictability. It is not uncommon for a system to downgrade performance in order to achieve a higher degree of predictability. 
 
-Real-time systems can be divided into three categories namely \textbf{hard, soft} and \textbf{firm} real-time systems.
-
-\textbf{The hard real-time systems} must respond before the specified deadline, otherwise the system may fail. Hard real-time systems are often safety-critical meaning that failure may cause loss of lives.
-
-\textbf{The soft real-time system} should respond before the specified deadline, but may work if occasional deadlines are missed. Possibly in a degraded mode. This is the case with video conferencing software, where some frames of the video fail, but audio still works. 
-
-\textbf{Firm real-time systems} should respond before the specified deadline; (occasional) missed deadlines have no value, but do not make the system fail.
-%Example? Brakes, air traffic control, power plant control, missile launcher?
-% subsection real_time_aspects (end)
-
-\subsection{Other Primary Goals} % (fold)
-\label{sub:other_primary_goals}
-The rest of the hard requirements are simply things that we need in order to hit the incoming vehicle as the project proposal states. First we need to see the target, thereafter we need to predict where we need to shoot in order to hit, then we aim tower correspondingly and fire. 
+The rest of the primary requirements are things that are needed in order to hit the incoming vehicle as the project proposal states. First detection of a suitable is necessary, thereafter prediction of the targets trajectory to establish where the turret needs to shoot in order to hit, then aiming of the turret correspondingly and firing the projectile. 
 % subsection other_primary_goals (end)
 
 \subsection{Secondary Goals} % (fold)
 \label{sub:secondary_goals}
-The secondary goals such as efficiency and compactness are design issues that could improve performance, making it possible to hit targets moving at higher speeds. Mobility and range could enable the tower to move in its environment or rotate 360 degrees and hit target all around it. All of the secondary goals are hardware dependent and we can therefore not specify more at this point.
+The secondary goals such as efficiency and compactness are design issues that could improve performance, making it possible to hit targets moving at higher speeds. Mobility and range could enable the tower to move in its environment or rotate 360 degrees and hit targets all around it. All of the secondary goals are hardware dependent and cannot be specified more at this point.
 % subsection secondary_goals (end)
 
