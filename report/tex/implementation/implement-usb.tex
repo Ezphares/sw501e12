@@ -1,22 +1,12 @@
 \section{USB protocol}
 The USB protocol has been implemented exactly as it has been described in \autoref{sec:design-usb}.
 
-When the Kinect has found the coordinates and speed vector of the target, the data will be sent to the NXT. \autoref{lst:usbpy} shows each coordinate for the position and the speed vector being converted to an array of chars so that they can be sent over USB. The function convert handles this conversion. Every coordinate is turned into an array of three items, which are combined in the function send\_data to one array containing all the data, 18 items in total. 
+When the Kinect has found the coordinates and speed vector of the target, the data will be sent to the NXT. \autoref{lst:usbpy} shows each coordinate for the position and the speed vector being converted to an array of chars. The function convert handles this conversion. Line 2 to 6 decides the value of the sign bit, if the integer is positive the sign bit will be 0, otherwise it will be 1. This sign bit is used in line 7 to 10 where the integer is converted into an array of chars. This array consists of the sign bit and the integer split into two different chars.
+All numbers converted to char arrays are from line 13 to 20 added to one single array that is sent over USB.
 
 \lstinputlisting[language=Python, caption=Conversion of target position and speed vector. File: usbcom.py, label=lst:usbpy]{listings/usb-py.py}
 
-Explanation of \autoref{lst:usbpy}:
-
-\begin{itemize}
-\item \textbf{Line 2 to 6}\\
-Decides the value of the sign bit, if the integer is positive the sign bit will be 0, otherwise it will be 1.
-\item \textbf{Line 7 to 10}\\
-Converts the integer into an array of chars. This array consists of the sign bit and the integer split into two different chars.
-\item \textbf{Line 13 to 20}\\
-Every input is an array converted from an int, they are all added to one array that can be sent over USB.
-\end{itemize}
-
-When the NXT has received the data, it will be converted from the char array into integers. \autoref{lst:usbc} shows part of the task TaskKinect, where each part of the target position and the speed vector is being converted back from the array of chars to integers. Each of the parts joins three elements from the array to make the integer. 
-The event EvTargetAcquired is set to true, so that the task TaskAim will start once TaskKinect is terminated.
+When the NXT has received the data, it will be converted from the char array into integers. \autoref{lst:usbc} shows part of the task TaskKinect, where on line 2 to 8, each part of the target position and the speed vector is being converted back from the array of chars to integers. Each of the parts joins three elements from the array to make the integer. 
+On line 11, the event EvTargetAcquired is set to true, so that the task TaskAim will start once TaskKinect is terminated.
 
 \lstinputlisting[language=C, caption=NXT conversion of array to ints. File: launcher.c, label=lst:usbc]{listings/usb-nxt.c}
