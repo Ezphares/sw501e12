@@ -4,39 +4,43 @@ Implementing the design from \autoref{image_analysis_design} did reveal some int
 some equally interesting solutions. Some of them are described in this section.
 
 \subsection{Object Detection}
-The primary purpose of the system, of course, is to analyze images to find targets for the turret. It was decided
-that a simple implementation using one of \ac{opencv}'s built-in algorithms, the hough circles transform would
-be a good place to start. Using the hough circles algorithm does require some preparation of the image data.
-The documentation of \ac{opencv} mandates that it is used only on gray-scale images, so the first step is to
-desaturate the received image.
-
-Additionally, running hough circles on a desaturated image returns a lot of ``false positives'' from image noise. The way
-this was solved, was simply to apply a gaussian blur before running the transform. The result of the transform is a
-list of circles, described as ($x$, $y$, $radius$). The radius is ignored in this case. The coordinates are saved directly
-to a KinectData instance, and the depth for that instance is found by looking up the coordinates in the depth data.
-
-The analyzer then tries to match the object to any previously detected objects, in this case by linking it to the closest
-existing object within a certain distance threshold. The code for this can be seen in \autoref{lst:objectdetect}. The
-full source has a lot of additional error handling, but what is shown should make the flow clear.
+\autoref{lst:objectdetect} is the implementation of the main functionality of the sensor. It is implemented in Python, and it was decided that a simple implementation using one of \ac{opencv}'s built-in algorithms, the hough circles transform would be a good place to start, when detecting targets.
 
 \lstinputlisting[language=Python, caption=Object Detection, label=lst:objectdetect]{listings/detect.py}
+
+Using the Hough circles algorithm does require some preparation of the image data.
+The documentation of \ac{opencv} mandates that it is used only on gray-scale images, so the first step is to desaturate the received image. Additionally, running Hough circles on a desaturated image returns a lot of ``false positives'' from image noise. The way
+this was solved, was simply to apply a gaussian blur before running the transform, which is what is done in lines 9-12 of \autoref{lst:objectdetect}. 
+
+Lines 16-20 is simple cleanup of expired objects.
+
+In lines 21-23 the Hough transform is applied to the grayscale, blurred image and if any circles are found, these are saved to a list of lists, where two of these are not relevant. The first list, however is a list of circles, described as ($x$, $y$, $radius$), which is what is needed. The radius is ignored in this case. In lines  26-28 the coordinates are saved directly to a KinectData instance, and the depth for that instance is found by looking up the coordinates in the depth data.
+
+The analyzer then tries to match the object to any previously detected objects, in this case by linking it to the closest
+existing object within a certain distance threshold. The code for this can be seen in lines 31-46 in \autoref{lst:objectdetect}. 
 
 \subsection{Conversion from Kinect data to Coordinate system}
 Another interesting bit
 was the conversion from a location detected by the Kinect, to a point in a 3D coordinate system. The code involved
-in this can be seen in \autoref{lst:kinectconvert}. The functions on the KinectData object are preliminary conversions,
+in this can be seen in \autoref{lst:kinectconvert}. 
+
+\lstinputlisting[language=Python, caption=Kinect to Coordinate conversions, label=lst:kinectconvert]{listings/convert.py}
+
+The class KinectData has properties h, v, depth and members hres, vres, hfield, vfield which are, in essence, static.
+The functions on the KinectData object are preliminary conversions,
 as the raw data is not very useful for position calculations: The $h$ and $v$ values are pixel coordinates, and the $depth$
-is received using a formula giving more precise results at close range.
+is received using a formula giving more precise results at close range. 
+In lines 6 and 7 the depth is converted to mm using a formula approximating how the Windows SDK does this, found at \cite{depthconversion}. 
+In lines 8-9 the conversion for the horizontal coordinates happens, with a calculation based on the pixel position, using image resolution and field of view. This is done for the vertical position in lines 10-11. The $h$ and $v$ values are converted to degrees by first dividing them with the resolution of the received image, getting
+a number between 0 and 1, which is then multiplied by the field of view of the Kinect.
 
 The necessary calculations are all related to triangles, and figures showing the known values $h$, $v$ and $depth$,
 can be seen along with the desired values $x$, $y$ and $z$ in \autoref{fig:kinectfig},
 along with the triangles they can be represented with. This means that the calculations can be done with relatively
 simple trigonometric formulae.
 
-The $h$ and $v$ values are converted to degrees by first dividing them with the resolution of the received image, getting
-a number between 0 and 1, which is then multiplied by the field of view of the Kinect. The depth is converted to
-millimeters. At this point the law of sines is used to find the $x$ and $y$ coordinates of the object, also in
-millimeters, and with those, Pythagoras' theorem is used to calculate the $z$ coordinate.
+At this point the data is saved in a 3D vector, which has the properties  $x$, $y$ and $z$. The law of sines is used to find the $x$ and $y$ coordinates of the object, in lines 24 and 25 (also in
+millimeters) and with those, Pythagoras' theorem is used to calculate the $z$ coordinate in line 29.
 
 \begin{figure}[hbtp]
 \includegraphics[width=0.90\textwidth]{img/kinectfigside.pdf}
@@ -44,8 +48,6 @@ millimeters, and with those, Pythagoras' theorem is used to calculate the $z$ co
 \caption{Overview of Kinect and Object} 
 \label{fig:kinectfig} 
 \end{figure}
-
-\lstinputlisting[language=Python, caption=Kinect to Coordinate conversions, label=lst:kinectconvert]{listings/convert.py}
 
 \subsection{Detected Object Suitability}
 

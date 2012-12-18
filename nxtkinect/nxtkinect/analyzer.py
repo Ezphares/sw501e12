@@ -120,7 +120,6 @@ class Analyzer(object):
                 x, y = circle[0], circle[1]
                 z = depth[y * 640 + x]
                 p = Vector3(from_kinect = KinectData(depth = z, h = x + DetectedObject.offset_x, v = y + DetectedObject.offset_y))
-                #print x, y, z
                 cv2.circle(frame.image, (int(x), int(y)), int(circle[2]), cv.CV_RGB(255, 0, 0), 2, 8, 0 )
                 
                 assigned = (None, Analyzer.tracking_max_distance)
@@ -134,7 +133,6 @@ class Analyzer(object):
         
                 o = None
                 if assigned[0] == None:
-                    #print "New object"
                     o = DetectedObject(datetime.now())
                     self.objects.append(o)
                 else:
@@ -145,7 +143,6 @@ class Analyzer(object):
                 o.age = 0
         
             cv2.imshow(self.window, frame.image)
-            #print len(self.objects)
     
     def timer(self):
         if len(self.frames) > 0:
