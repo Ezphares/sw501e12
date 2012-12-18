@@ -5,6 +5,17 @@ When the Kinect has found the coordinates and speed vector of the target, the da
 
 \lstinputlisting[language=Python, caption=Conversion of target position and speed vector. File: usbcom.py, label=lst:usbpy]{listings/usb-py.py}
 
+Explanation of \autoref{lst:usbpy}:
+
+\begin{itemize}
+\item \textbf{Line 2 to 6}\\
+Decides the value of the sign bit, if the integer is positive the sign bit will be 0, otherwise it will be 1.
+\item \textbf{Line 7 to 10}\\
+Converts the integer into an array of chars. This array consists of the sign bit and the integer split into two different chars.
+\item \textbf{Line 13 to 20}\\
+Every input is an array converted from an int, they are all added to one array that can be sent over USB.
+\end{itemize}
+
 When the NXT has received the data, it will be converted from the char array into integers. \autoref{lst:usbc} shows part of the task TaskKinect, where each part of the target position and the speed vector is being converted back from the array of chars to integers. Each of the parts joins three elements from the array to make the integer. 
 The event EvTargetAcquired is set to true, so that the task TaskAim will start once TaskKinect is terminated.
 
