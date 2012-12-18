@@ -4,7 +4,7 @@ Implementing the design from \autoref{image_analysis_design} did reveal some int
 some equally interesting solutions. Some of them are described in this section.
 
 \subsection{Object Detection}
-\autoref{lst:objectdetect} is the implementation of the main functionality of the sensor. It is implemented in Python, and it was decided that a simple implementation using one of \ac{opencv}'s built-in algorithms, the hough circles transform would be a good place to start, when detecting targets.
+\autoref{lst:objectdetect} is the implementation of the main functionality of the sensor. It is implemented in Python, and it was decided that a simple implementation using one of \ac{opencv}'s built-in algorithms, the Hough circles transform would be a good place to start, when detecting targets.
 
 \lstinputlisting[language=Python, caption=Object Detection, label=lst:objectdetect]{listings/detect.py}
 
@@ -26,11 +26,10 @@ in this can be seen in \autoref{lst:kinectconvert}.
 
 \lstinputlisting[language=Python, caption=Kinect to Coordinate conversions, label=lst:kinectconvert]{listings/convert.py}
 
-The class KinectData has properties h, v, depth and members hres, vres, hfield, vfield which are, in essence, static.
 The functions on the KinectData object are preliminary conversions,
 as the raw data is not very useful for position calculations: The $h$ and $v$ values are pixel coordinates, and the $depth$
 is received using a formula giving more precise results at close range. 
-In lines 6 and 7 the depth is converted to mm using a formula approximating how the Windows SDK does this, found at \cite{depthconversion}. 
+In lines 6 and 7 the depth is converted to mm using a formula approximating how the Windows SDK does this \cite{depthconversion}. 
 In lines 8-9 the conversion for the horizontal coordinates happens, with a calculation based on the pixel position, using image resolution and field of view. This is done for the vertical position in lines 10-11. The $h$ and $v$ values are converted to degrees by first dividing them with the resolution of the received image, getting
 a number between 0 and 1, which is then multiplied by the field of view of the Kinect.
 

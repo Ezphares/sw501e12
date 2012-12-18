@@ -23,7 +23,7 @@ $$tan_a = {v \text{ \textpm} \text{ } v^2 - 2g(y + {1 \over 2}g(z^2/v^2))^{1 \ov
 includes the velocity of the projectile, $v$, the gravitational acceleration of the Earth $g$, the distance to the
 target $z$, and the height of the projectile over the ground $y$. It should be noted that the $z$ in this formula
 is actually the depth to the object, and not its $z$-coordinate. This calculation results in two possibles angles
-of fire, stored in $degrees_pos$ and $degrees_neg$ (line 21-28).
+of fire, stored in $degrees\_pos$ and $degrees\_neg$ (line 21-28).
 
 The values are negative if it is necessary to raise the turret above its initial position, therefore max (on line 30)
 chooses the one closest to 0\textdegree . This gives the fastest possible aim, as lifting the turret takes a nonzero
