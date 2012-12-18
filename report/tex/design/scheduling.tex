@@ -23,7 +23,7 @@ The tasks are summarized below:
   this is slightly longer when data is received, as some processing takes place immediately.
   \item{Aim}\\
   Predicts target movement and aligns the turret to the target point. This should be run once,
-  when data is received in the Kinect task. It's deadline is "before the turret has to fire" - this
+  when data is received in the Kinect task. Its deadline is ``before the turret has to fire'' - this
   is described in greater detail, below. The time it takes is determined by how far the turret has
   to turn to hit it's target.
   \item{Fire}\\
@@ -32,7 +32,7 @@ The tasks are summarized below:
   the target passes, and it takes a fixed time.
 \end{itemize}
 
-\subsection{Turret firing time}
+\subsection{Turret Firing Deadline}
 The point in time at which the turret has to fire can be described as\\
 \begin{math}
 Moment_{fire} = Moment_{received} + Time_{prediction} - ( Distance_{target} / Speed_{projectile} )
@@ -42,19 +42,19 @@ Where:
 \begin{itemize}
   \item $Moment_{fire}$ is the absolute time at which the Fire task is released.
   \item $Moment_{received}$ is the absolute time at which data was received on the USB.
-  \item $Time_{prediction}$ is how far into the future motion is predicted.
-  \item $Distance_{target}$ is how far from the cannon the target is PREDICTED to be.
-  \item $Speed_{projectile}$ is the average speed of the projectile moving to the target.
+  \item $Time_{prediction}$ is how far into the future target's motion is predicted.
+  \item $Distance_{target}$ is how far from the cannon the target is predicted to be.
+  \item $Speed_{projectile}$ is the average speed of the projectile moving towards the target.
   \item $Time_{delay}$ is the fixed delay in the system, comprised of the time to send data from the
   Kinect to the NXT, and the time after starting the fire task until the projectile is actually released.
 \end{itemize}
 The only one of these parameters that can be changed as desired is $Time_{prediction}$. However
 there is another dynamic parameter, $Distance_{target}$ that needs to be taken into account.
-There is two options for this:
+There are two options for this:
 \begin{enumerate}
   \item Increasing $Time_{prediction}$ based on the distance. This means that $Moment_{fire}$
-  always have a offset from $Moment_{Received}$, and as that keeps the deadline for the Aim
-  task, fixed as well.
+  always has an offset from $Moment_{Received}$, and that keeps the deadline for the Aim
+  task fixed as well.
   \item Keeping $Time_{prediction}$ constant, reducing the time between $Moment_{Received}$
   and $Moment_{fire}$ based on distance. This changes the deadline for Aim, but keeps
   the prediction calculation easier.
@@ -62,12 +62,12 @@ There is two options for this:
 The first option would seem best at first, however, initial experiments with the Kinect and
 image analysis revealed some imprecisions in determining the target's motion. This means
 that a change to prediction time, also makes predictions less accurate, since predicting
-farther into the future inflates any such imprecisions. Instead the second option was chosen,
+further into the future inflates any such imprecisions. Instead the second option was chosen,
 even though this puts an effective maximum distance on the turret, namely the distance where
 the time to fire will occur before aiming is done.
 
 \subsection{Method of Scheduling}
-nxtOSEK gives us access to a powerful scheduler, which may be overkill for this system,
+nxtOSEK gives access to a powerful scheduler, which may be overkill for this system,
 considering that three of the tasks, Reset, Aim and Fire, should never be released at
 the same time. This coincidentally also makes them sporadic, in a real-time context,
 which normally whould make them harder to account for than periodic tasks. These
@@ -78,6 +78,6 @@ The only periodic task, Kinect, is however scheduled to run each millisecond, an
 should be prioritized higher than the other tasks, as well as allow full pre-emption,
 to prevent it from timing out.
 
-The simple nature of task timings make for a very predictable system, as long as it's
+The simple nature of task timings make for a very predictable system, as long as its
 restrictions are complied with. It also means, however, that these restrictions are
 hard, and not complying will make the system do nothing at all.
